@@ -1,0 +1,286 @@
+<div class="header-img img-dashA" style="background-image: url('/assets/images/headers/bm2ContrataProv.jpg');">
+    <div class="cover-black">
+        <div class="container p-a-0 col-xs-12 p-x-sm text-left">
+            <div class="flex-item-sb">
+                <h5 class="text-white hidden-sm-down">PERFIL CONTRATANTE: Contrata un Proveedor</h5>
+            </div>
+        </div>
+    </div>
+</div>
+<br/>
+<div class="p-y-xs">
+    <div class="container p-a-0 text-blue m-b-lg">
+        <div class="bubbleContratante text-tittle m-b">
+            <i class="fa fa-home"></i>
+            <span> Contrata un Proveedor</span>
+        </div>
+        <div class="box rbox p-a-sm col-xs-12 m-t-xs">
+            <form [formGroup]="_contractForm" (ngSubmit)="addContract();">
+                <ngb-tabset>
+                    <ngb-tab>
+                        <ng-template ngbTabTitle>
+                            <h5>General</h5>
+                        </ng-template>
+                        <ng-template ngbTabContent>
+                            <div id="nameFIELD" class="box-header text-justify">
+                                <strong>Entre más detallado sea tu requerimiento en cada campo solicitado, con mayor precisión y
+                                    rapidez podrán los proveedores enviarte la cotización. Podrás ahorrarte muchas preguntas
+                                    que te hagan y así optimizarás tiempo.</strong>
+                            </div>
+                            <div class="form-group" style="margin-left: 1rem;margin-right: 1rem;">
+                                <label for="nameRequest" class="_800">
+                                    <i class="asterisk-label fa fa-asterisk"></i>
+                                    Nombre Producto/Servicio
+                                </label>
+                                <input type="text" class="form-control" name="nameRequest" id="nameRequest" placeholder="Nombre de tu Requerimiento" minlength="6"
+                                    formControlName="nameRequest" required/>
+                            </div>
+                            <div class="col-xs-12 m-b b-a b-primary rbox p-a hidden-md-down" style="margin-left: 1rem;margin-right: 1rem;">
+                                <div class="text-tittle text-md">
+                                    ¡Ya puedes grabar tu solicitud para explicarla con mucho más detalle!
+                                    <h5 class="text-grey text-xs">
+                                        Puedes detener la grabación despues de unos segundos de iniciada; si te equivocas puedes eliminarla e intentarlo nuevamente.
+                                    </h5>
+                                </div>
+                                <div id="audioFIELDBOx" class="col-xs-12 p-a-0" *ngFor="let audio of _audioSolicitud; let i = index">
+                                    <div class="col-xs-12 col-sm-6">
+                                        <audio class="audioPlay m-t" controls>
+                                            <source src="{{audio}}" type="audio/mpeg">
+                                        </audio>
+                                    </div>
+                                    <div class="col-xs-12 col-sm-6 m-t p-t-xs">
+                                        <button type="button" class="btn btn-sm rounded text-danger _800 white b-a b-danger" (click)="deleteUserMedia(i)">
+                                            Eliminar Grabacion
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="text-center text-tittle p-t col-xs-12" id="messageRecInfo" *ngIf="_messageRec">
+                                    {{_messageRec}}
+                                </div>
+                                <div class="col-xs-12 m-t m-b-xs" *ngIf="!_errorRecord">
+                                    <button type="button" class="btn btn-sm rounded text-primary _800 white b-a b-primary" *ngIf="!_initRecord" (click)="createAudio()">Iniciar Grabación</button>
+                                    <button type="button" class="btn btn-sm rounded text-primary _800 white b-a b-primary" *ngIf="_initRecord" (click)="stopUserMedia()"
+                                        id="stopMediaRec">Detener Grabación</button>
+                                </div>
+                            </div>
+                            <div id="descFIELD" class="row col-xs-12 m-a-0 m-b p-a-0" style="margin-left: 1rem;margin-right: 1rem">
+                                <label for="descripcion" class="_800">
+                                    <i class="asterisk-label fa fa-asterisk"></i>
+                                    Descripción del requerimiento
+                                </label>
+                                <textarea formControlName="descripcion" name="descripcion" class="form-control" rows="5" id="comment"></textarea>
+                            </div>
+                        </ng-template>
+                    </ngb-tab>
+                    <ngb-tab>
+                        <ng-template ngbTabTitle>
+                            <h5>Items</h5>
+                        </ng-template>
+                        <ng-template ngbTabContent>
+                            <div id="itemsFIELD" class="row col-xs-12 m-a-0 m-b p-a-0" style="margin-left: 1rem;margin-right: 1rem;">
+                                <label class="_800">
+                                    <i class="asterisk-label fa fa-asterisk"></i>
+                                    Añade añade uno por uno los productos/ servicios para los cuales quieres obtener propuesta
+                                </label>
+                                <table class="table table-responsive m-l m-b-0">
+                                    <thead class="_500">
+                                        <td width="80%" class="p-a-sm">Descripción</td>
+                                        <td width="15%" class="p-a-sm text-center">Cantidad</td>
+                                        <td width="5%" class="p-l"></td>
+                                    </thead>
+                                    <tbody>
+                                        <tr *ngFor="let item of _arrayItems | async">
+                                            <td class="p-a-sm">
+                                                <div *ngIf="item.createBy == 'Contratante'">
+                                                    <textarea class="form-control" name="descriptionItem" id="descriptionItem" rows="3">{{item.description}}</textarea>
+                                                </div>
+                                                <div *ngIf="item.createBy != 'Contratante'">
+                                                    <input type="text" name="description" class="form-control" min-length="5" value="{{item.description}}"> 
+                                                </div>
+                                            </td>
+                                            <td class="p-a-sm text-center">
+                                                {{item.quantity}}
+                                            </td>
+                                            <td>
+                                                <button type="button" class="btn btn-sm danger m-l p-t-sm p-b-sm" (click)="removeItem(i)">
+                                                    <i class="fa fa-minus"></i>
+                                                </button>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <!--td>
+                                                <input type="text" name="description" [(ngModel)]="_dataItem.description" class="form-control" min-length="5">
+                                            </td>
+                                            <td>
+                                                <input type="text" name="quantity" [(ngModel)]="_dataItem.quantity" class="form-control m-l-sm" min="0" ui-number-mask="0">
+                                            </td>
+                                            <td>
+                                                <button type="button" class="btn btn-sm cyan-700 m-l p-t-sm p-b-sm" [disabled]="_dataItem.description == '' && _dataItem.quantity == 0"
+                                                    (click)="addItemList()">
+                                                    <i class="fa fa-plus"></i>
+                                                </button>
+                                            </td-->
+                                            <button type="button" class="btn btn-sm cyan-700 m-l p-t-sm p-b-sm" (click)="addItemList()">
+                                                <i class="fa fa-plus"></i>
+                                            </button>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </ng-template>
+                    </ngb-tab>
+                    <ngb-tab>
+                        <ng-template ngbTabTitle>
+                            <h5>Archivo</h5>
+                        </ng-template>
+                        <ng-template ngbTabContent>
+                            <div class="form-group row m-a-0 m-b p-a-0" style="margin-left: 1rem;margin-right: 1rem;">
+                                <label class="col-sm-7 form-control-label p-l-xs">
+                                    <strong>Adjuntar Archivo (Opcional)</strong>
+                                </label>
+                                <div class="col-sm-5 p-a-0 form-file text-right m-r-0 p-r-0">
+                                    <input type="file" class="btn form-control no-border w-md" nv-file-select="" uploader="uploader" />
+                                    <button class="btn blue-brand text-white">Seleccionar Archivo</button>
+                                </div>
+                                <div class="col-xs-12 col-md-offset-4 col-md-8 m-t-xs p-r-0 m-r-0">
+                                    <p class="text-right text-0-9x">Formatos Permitidos: PNG,JPG,JPEG,GIF,PDF,DOC,CSV,XLS,XLSX,ZIP.</p>
+                                    <p class="text-right text-justify text-xs p-l-md">
+                                        ¡Eyy! Recuerda que tu adjunto NO debe contener ningún dato de contacto: e-mail, teléfono, dirección, usuario Skype, o cualquier
+                                        otro. En caso que infrinjas esta norma Ormigga, serás sancionado.
+                                    </p>
+                                </div>
+                                <div class="text-danger text-xs text-right"></div>
+                            </div>
+                        </ng-template>
+                    </ngb-tab>
+                    <ngb-tab>
+                        <ng-template ngbTabTitle>
+                            <h5>Tiempo</h5>
+                        </ng-template>
+                        <ng-template ngbTabContent>
+                            <div id="maxDayFIELD" class="form-group row m-a-0 m-b p-a-0" style="margin-left: 1rem;margin-right: 1rem">
+                                <div class="col-xs-12 p-a-0">
+                                    <label class="form-control-label p-l-0">
+                                        <i class="asterisk-label fa fa-asterisk"></i>
+                                        <strong>¿Hasta qué día máximo recibirás propuestas?</strong>
+                                    </label>
+                                </div>
+                                <div class="col-xs-12 p-r-0">
+                                    <div class="col-sm-7 p-t-sm p-l">
+                                        Seleccione una fecha:
+                                    </div>
+                                    <div class="col-sm-5 p-r-0 p-l-0 input-group">
+                                        <span class="input-group-addon">
+                                            <i class="glyphicon glyphicon-calendar"></i>
+                                        </span>
+                                        <input type="text" class="form-control" data-icon-left="fa fa-chevron-left" data-icon-right="fa fa-chevron-right" name="dateFinish"
+                                            data-date-format="dd-MM-yyyy" data-min-date="today" data-autoclose="1" bs-datepicker
+                                            placeholder="DD-MM-AAAA" required>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group row m-a-0 m-b-xs p-a-0" style="margin-left: 1rem;margin-right: 1rem;">
+                                <label class="col-xs-12 form-control-label p-l-0">
+                                    <i class="asterisk-label fa fa-asterisk"></i>
+                                    <strong>¿En cuánto tiempo iniciarás el contrato?</strong>
+                                </label>
+                                <label class="col-xs-12 col-sm-4">
+                                    <input type="radio" style="vertical-align: middle" value="En menos de 7 días" id="quincedias" name="time_start"> En menos de 7 días
+                                </label>
+                                <label class="col-xs-12 col-sm-4">
+                                    <input type="radio" style="vertical-align: middle" value="Entre 7 y 15 días" id="quincedias" name="time_start"> Entre 7 y 15 días
+                                </label>
+                                <label class="col-xs-12 col-sm-4">
+                                    <input type="radio" style="vertical-align: middle" value="Entre 15 días y 1 mes" id="quinceyunmes" name="time_start"> Entre 15 días y 1 mes
+                                </label>
+                                <label class="col-xs-12 col-sm-4">
+                                    <input type="radio" style="vertical-align: middle" value="Entre 1 y 2 meses" id="unoydosmeses" name="time_start"> Entre 1 y 2 meses
+                                </label>
+                                <label class="col-xs-12 col-sm-4">
+                                    <input type="radio" style="vertical-align: middle" value="Entre 2 y 6 meses" id="dosy6meses" name="time_start"> Entre 2 y 6 meses
+                                </label>
+                                <label class="col-xs-12 col-sm-4">
+                                    <input type="radio" style="vertical-align: middle" value="En más de 6 meses" id="masde6meses" name="time_start"> En más de 6 meses
+                                </label>
+                                <label class="col-xs-12 col-sm-4">
+                                    <input type="radio" style="vertical-align: middle" value="Otro" id="other" name="time_start"> Otro
+                                </label>
+                                <div class="col-xs-12 p-a-0">
+                                    <input type="text" name="otroTimestart" id="otroTimestart" class="form-control" placeholder="Especifica el tiempo" />
+                                </div>
+                            </div>
+                            <div class="col-xs-12 b-a rbox p-a-sm m-b" style="margin-left: 1rem;margin-right: 1rem;">
+                                <div class="col-xs-12 p-a-0">
+                                    <div class="col-sm-12 p-t-sm m-b">
+                                        Fecha máxima en la que esperas contratar:
+                                    </div>
+                                    <div class="col-sm-5 input-group m-b">
+                                        <span class="input-group-addon">
+                                            <i class="glyphicon glyphicon-calendar"></i>
+                                        </span>
+                                        <input type="text" class="form-control" data-icon-left="fa fa-chevron-left" data-icon-right="fa fa-chevron-right" name="urgentDateContrato"
+                                            data-date-format="dd-MM-yyyy" data-autoclose="1" bs-datepicker placeholder="DD-MM-AAAA">
+                                    </div>
+                                </div>
+                                <div id="dateDeliver" class="col-xs-12 p-a-0">
+                                    <div class="col-sm-12 p-t-sm m-b-0">
+                                        Fecha en la que debes recibir el producto / servicio:
+                                    </div>
+                                    <div class="form-group m-t col-xs-12 p-a-0 m-b-0">
+                                        <div class="form-group col-xs-12 col-sm-5 input-group">
+                                            <span class="input-group-addon">
+                                                <i class="glyphicon glyphicon-calendar"></i>
+                                            </span>
+                                            <input size="8" class="form-control" data-autoclose="1" placeholder="Fecha esperada" data-icon-left="fa fa-chevron-left"
+                                                data-icon-right="fa fa-chevron-right" bs-datepicker="" type="text">
+                                        </div>
+                                        <div class="form-group col-xs-12 col-sm-5 p-r-0 input-group">
+                                            <span class="input-group-addon">
+                                                <i class="fa fa-clock-o"></i>
+                                            </span>
+                                            <input size="8" class="form-control" data-autoclose="1" placeholder="Hora esperada" data-icon-up="fa fa-chevron-up" data-icon-down="fa fa-chevron-down"
+                                                bs-timepicker="" type="text">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </ng-template>
+                    </ngb-tab>
+                    <ngb-tab>
+                        <ng-template ngbTabTitle>
+                            <h5>Evaluacion</h5>
+                        </ng-template>
+                        <ng-template ngbTabContent>
+                            <div id="validFIELD" ng-show="!inProcess" class="box rbox-top col-xs-12 p-a-sm m-b-0" style="margin-left: 1rem;margin-right: 1rem;">
+                                <div class="box-body m-a-0 p-a-0 col-xs-12">
+                                    <div class="col-xs-12 p-l-0">
+                                        <p class="text text-justify">
+                                            <span class="col-sm-1 text-right">1.</span>
+                                            <p class="col-sm-11 p-l-0"> Activa las variables que tendrás en cuenta para evaluar las propuestas.</p>
+                                            <p class="text text-justify">
+                                                <span class="col-sm-1 text-right">2.</span>
+                                                <p class="col-sm-11 p-l-0"> A cada variable asígnale un puntaje entre 0 y 100. Entre más puntaje, más
+                                                    importancia tendrá a la hora de evaluar las propuestas.</p>
+                                                <p class="text text-justify">
+                                                    <span class="col-sm-1 text-right">3.</span>
+                                                    <p class="col-sm-11 p-l-0"> Ten en cuenta que los puntajes de todas las variables deben sumar 100
+                                                        exactamente.
+                                                    </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </ng-template>
+                    </ngb-tab>
+                    <ngb-tab>
+                        <ng-template ngbTabTitle>
+                            <h5>Forma de Pago</h5>
+                        </ng-template>
+                        <ng-template ngbTabContent>
+                            <p>Pruebas tab Pago</p>
+                        </ng-template>
+                    </ngb-tab>
+                </ngb-tabset>
+            </form>
+        </div>
+    </div>
+</div>

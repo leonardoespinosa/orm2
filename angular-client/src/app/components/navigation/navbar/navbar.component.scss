@@ -1,0 +1,26 @@
+.main {
+    background-color: #fff;
+    min-height: 4rem;
+
+    .image {
+        margin-bottom: 0.5rem;
+        margin-left: 2.5rem;
+    }
+
+    .options {
+        justify-content: flex-end;
+    }
+
+    .user {
+        margin-left: 5rem;
+    }
+
+    .menu {
+        margin-right: 4rem !important;
+        margin-left: 2rem;
+    }
+
+    .icon {
+        margin-right: 1rem;
+    }
+}

@@ -1,0 +1,85 @@
+<div class="header-img img-dashA" style="background-image: url('/assets/images/headers/bm5ContrataPropReciv.jpg');">
+    <div class="cover-black">
+        <div class="container p-a-0 col-xs-12 p-x-sm text-left">
+            <div class="flex-item-sb">
+                <h5 class="text-white hidden-sm-down">
+                    <span class="">PERFIL CONTRATANTE:</span> Propuestas Recibidas
+                </h5>
+                <button (click)="goToSupplierContracts()" class="btn blue-brand md-btn md-raised m-b-sm text-white rounded pull-right text-tittle btn-loading hidden-xs-down">
+                    Contrata un Proveedor
+                    <i class="fa fa-circle-o-notch fa-spin icon-loading m-l-xs" ng-class="{'icon-loading-active': loadIcon}"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="p-y-xs">
+    <div class="container p-a-0 m-b-lg">
+        <!--div class="col-xs-12 text-xs">
+            <div class="text-blue hidden-lg-up">
+                <a class="btn white btn-menu" ui-toggle-class="active" target="#menu-contratante">
+                    <i class="material-icons">&#xe5d2;</i>
+                </a>
+            </div>
+        </div>
+        <div class="hidden-lg-up">
+            <div ui-include="panelMenu"></div>
+        </div-->
+        <div class="col-xs-12 col-lg-9 p-t-xs m-t">
+            <div *ngIf="_currentUser.iam == 2" id="bubbleContratante" class="bubbleContratante text-tittle m-b col-xs-12">
+                <div class="col-xs-12 l-h-15x">
+                    <div class="col-xs-11 p-a-0">
+                        <img class="p-l-xs ng-scope" src="/assets/images/icon/Propuestas-recibidas-Titulo.png" width="35px">
+                        <span class="text-lg ng-binding">Propuestas Recibidas</span>
+                    </div>
+                    <!--div class="col-xs-1 p-t-xs p-r-0 m-r-0 text-right" style="bottom: 6px;">
+                        <span ng-show="tip" class="text-xs p-r-0 m-r-0 pos-abt" style="bottom:-10px;right:-10px">Cerrar</span>
+                        <span ng-show="!tip" class="text-xs p-r-0 m-r-0 pos-abt" style="bottom:-10px;right:0px">Ver</span>
+                        <i class="fa fa-question-circle"></i>
+                    </div-->
+                </div>
+            </div>
+        </div>
+        <div *ngIf="_inProcess" class="box rbox text-blue col-xs-12">
+            <div class="box-body">
+                <div class=" text-center">
+                    <h1>
+                        <i class="fa fa-spin fa-spinner fa-3x text-blue-brand"></i>
+                    </h1>
+                    <h4> Validando y cargando propuestas... </h4>
+                </div>
+            </div>
+        </div>
+        <div *ngIf="!_inProcess" class="col-xs-12 rbox" style="width: 73.7%;padding-left: 14px;">
+            <div id="lista_solicitudes" class="text-right p-r-0 hidden-sm-down" style="display: inline-block;padding: 0;width: 57%;">
+                <button class="col-xs-12 btn bubble-head danger text-tittle text-0-9x p-a-sm dropdown-toggle dropdown-toogle-rigth" data-toggle="dropdown" style="width: 100%;text-align: left;font-size: 20px !important;height: 38px;background: #0f4f7d;">
+                    <span class="p-l">{{_solicitudSelect.nameRequest}}</span>
+                </button>
+            </div>
+            <div id="compararPropuestas" class="col-md-5 text-right p-r-0 hidden-sm-down" style="padding: 0;float: right;font-size: 20px !important;height: 38px;">
+                <button class="col-xs-12 btn bubble-head danger text-tittle text-0-9x p-a-sm" style="width: 100%;">
+                    <img src="/assets/images/icon/Comparacion-Propuestas-Titulo.png" width="22px">
+                    <span class="p-l">COMPARAR PROPUESTAS</span>
+                </button>
+            </div>
+        </div>
+        <div class="box rbox text-blue col-xs-12" style="width: 72.5%;margin-top: 0.5rem;margin-left: 0.8rem;">
+            <div class="box-body m-b-0 p-b-0">
+                <div class="container p-b-0 m-b-0">
+                    <div class="col-sm-8 flex-container-column h-250 text-left p-a-0 m-a-0 p-t-lg" style="display: inline-block;">
+                        <h4 class="m-t-sm p-t-sm animated bounceIn">Tip de ayuda:</h4>
+                        <div>
+                            <p class="_800">
+                                Recibe aquí las propuestas de los proveedores a tus solicitudes. Selecciónalos como finalistas y compáralos para descubrir
+                                tu mejor opción a contratar.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="col-sm-4 text-right m-a-0 p-a-0" style="display: inline-block;">
+                        <img style="text-align:right;margin-top:5px;padding-top: 5px;" src="/assets/images/Ormigga_revMail.png" width="200">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

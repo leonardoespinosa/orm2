@@ -1,0 +1,63 @@
+<div style="background-image: url('/assets/images/backSignin.jpg'); width: 100vw;height: 100vh;">
+    <div class="p-y-md container text-black-lt">
+        <div class="container col-sm-8 col-sm-offset-2 p-l-0 ">
+            <div class="col-xs-12 m-b-xs">
+                <div class="hidden-xs-down text-sm text-center center-block">
+                    <a href="/">
+                        <img class="img-responsive" style="max-width:270px" src="/assets/images/logo_color.png">
+                    </a>
+                </div>
+                <div class="text-sm text-center m-t-xs m-b-md">
+                    <h5 class="text-black-lt text-center">
+                        Ingresa con tu cuenta registrada o crea una
+                        <a class="text-primary _600">
+                        aquí</a>. Es
+                        <span class="text-primary">GRATIS!</span>
+                    </h5>
+                </div>
+            </div>
+            <form [formGroup]="_signinForm" (ngSubmit)="login()" novalidate class="p-a-md">
+                <div class="form-group row p-a-xs">
+                    <label class="col-sm-4 p-l-0 text-right  p-t-sm m-a-0 _800">Correo</label>
+                    <div class="col-xs-12 col-sm-8 col-md-6 p-l-0">
+                        <input formControlName="email" type="email" class="form-control" required minlength="6" style="z-index:1">
+                        <div *ngIf="_signinForm.controls['email'].hasError('invalidEmailAddress') && _signinForm.controls['email'].touched" class="error-message">Debes escribir una cuenta de correo válida.</div>
+                        <div *ngIf="_signinForm.controls['email'].hasError('required') && _signinForm.controls['email'].touched" class="error-message">Escribe un correo valido</div>
+                        <div *ngIf="_signinForm.controls['email'].hasError('minlength') && _signinForm.controls['email'].touched" class="error-message">El correo no es valido.</div>
+                    </div>
+                </div>
+                <div class="form-group row p-a-xs">
+                    <label class="col-sm-4 p-l-0 text-right p-t-sm m-a-0 _800">Contraseña</label>
+                    <div class="col-xs-12 col-sm-8 col-md-6 p-l-0">
+                        <input formControlName="password" type="password" class="form-control" minlength="4" required style="z-index:1">
+                        <div *ngIf="_signinForm.controls['password'].hasError('required') && _signinForm.controls['password'].touched" class="error-message">Escribe una contraseña</div>
+                        <div *ngIf="_signinForm.controls['password'].hasError('minlength') && _signinForm.controls['password'].touched" class="error-message">Debe ser al menos de 4 carácteres</div>
+                    </div>
+                </div>
+                <div class="form-group row p-a-0">
+                    <div class="m-b-md">
+                        <div class="col-sm-offset-3 col-sm-7 text-center m-b-md">
+                            <h6 class="text-black text-black-lt text-right _800">
+                                <a style="z-index:500">¿Olvidaste tu contraseña?</a>
+                            </h6>
+                        </div>
+                    </div>
+                    <div class="center-block ">
+                        <div class="col-sm-3"></div>
+                        <div class="col-sm-7 text-center m-b-md">
+                            <button type="submit" [disabled]="!_signinForm.valid" class="btn btn-primary rounded p-x-md text-2x">Entrar</button>
+                        </div>
+                    </div>
+                    <div class="p-y-md text-center">
+                        <div class="col-sm-3"></div>
+                        <div class="col-sm-7 text-center m-b-md">
+                            <h6>¿No tienes cuenta?
+                                <a class="text-u-l text-blue-brand p-a-xs _600" style="z-index:500">Créala aquí</a>
+                            </h6>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

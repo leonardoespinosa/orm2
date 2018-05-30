@@ -1,0 +1,13 @@
+@font-face{
+   font-family: "Gotham Bold";
+   src: url("../fonts/Gotham/Gotham-Bold.ttf") format("truetype");
+}
+@font-face{
+   font-family: "Gotham Light";
+   src: url("../fonts/Gotham/Gotham-Light.ttf") format("truetype");
+}
+
+body{
+  font-family: "Gotham Light";
+  font-size:16px !important;
+}

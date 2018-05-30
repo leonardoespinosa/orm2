@@ -1,0 +1,49 @@
+page-signin {
+    .main {
+        margin-top: 4rem;
+
+        .logo {
+            text-align: center;
+
+            .image {
+                width: 60%;
+            }
+        }
+
+        .form {
+            margin-top: 6rem;
+
+            .user {
+                background-color: #3cbda1;
+                color: white;
+                border-radius: 20px;
+            }
+
+            .pwd {
+                background-color: #3cbda1;
+                color: white;
+                border-radius: 20px;
+                margin-top: 1rem;
+            }
+
+            .lbl {
+                color: white;
+            }
+
+            .btn-signin {
+                width: 100%;
+                color: #3cbda1;
+                border-color: #3cbda1;
+            }
+
+            .forgot-pwd {
+                color: #3cbda1;
+            }
+        }
+
+        .register-msg {
+            margin-top: 10rem;
+            text-align: center;
+        }
+    }
+}
