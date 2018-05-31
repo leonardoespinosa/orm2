@@ -5,7 +5,7 @@ import { SplashScreen } from '@ionic-native/splash-screen';
 import { Device } from '@ionic-native/device';
 import { Network } from '@ionic-native/network';
 
-import { SigninComponent } from '../pages/auth/signin/signin';
+import { SigninPage } from '../pages/auth/signin/signin';
 
 @Component({
   templateUrl: 'app.html'
@@ -33,7 +33,7 @@ export class MyApp {
       splashScreen.hide();
 
       // TODO: Validar rol del usuario para redirigirlo a una pagina u otra
-      this.rootPage = SigninComponent;
+      this.rootPage = SigninPage;
     });
   }
 }
