@@ -1,0 +1,15 @@
+$primary-color: #3cbda1 !important;
+
+.toolbar-background-md {
+    background: $primary-color;
+}
+
+.toolbar-background-ios {
+    background: $primary-color;
+}
+
+.nav-logo{
+    width: 12rem;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}

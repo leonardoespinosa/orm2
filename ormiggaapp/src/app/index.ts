@@ -3,11 +3,13 @@ import { ContractorTabsPage } from '../pages/contractor/tabs/contractor-tabs';
 import { QuotationPage } from '../pages/contractor/quotation/quotation';
 import {  RequestPage } from '../pages/contractor/request/request';
 import { ContractorOptionsPage } from '../pages/contractor/options/contractor-options';
+import { StepOnePage } from '../pages/contractor/quotation/step-one/step-one';
 
 export const PAGES_DECLARATIONS = [
     SigninPage,
     ContractorTabsPage,
     QuotationPage,
     RequestPage, 
-    ContractorOptionsPage
+    ContractorOptionsPage,
+    StepOnePage
 ];
