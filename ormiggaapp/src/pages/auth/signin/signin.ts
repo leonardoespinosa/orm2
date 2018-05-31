@@ -53,9 +53,9 @@ export class SigninPage implements OnInit {
      */
     ngOnInit() {
         let _currentUser: CurrentUser = this._accessService.getCurrentUser();
-        if (_currentUser) {
+        /*if (_currentUser) {
             this._navCtrl.setRoot(ContractorTabsPage);
-        }
+        }*/
         this._signinForm = new FormGroup({
             email: new FormControl('', [Validators.required, Validators.minLength(6)]),
             password: new FormControl('', [Validators.required, Validators.minLength(4)])

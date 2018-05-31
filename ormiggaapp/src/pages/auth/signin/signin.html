@@ -1,17 +1,17 @@
 <ion-content padding class="main">
     <div class="logo">
-        <img src="assets/imgs/logo.png" class="image">
+        <img src="assets/imgs/logo_ormigga.png" class="image">
     </div>
     <form [formGroup]="_signinForm" (ngSubmit)="login()" novalidate class="form">
         <ion-list>
+            <ion-label class="lbl">Usuario</ion-label>
             <ion-item class="user">
                 <ion-icon name="person" item-end></ion-icon>
-                <ion-label stacked class="lbl">USUARIO</ion-label>
                 <ion-input type="text" formControlName="email"></ion-input>
             </ion-item>
+            <ion-label class="lbl">Contraseña</ion-label>
             <ion-item class="pwd">
                 <ion-icon name="key" item-end></ion-icon>
-                <ion-label stacked class="lbl">CONTRASEÑA</ion-label>
                 <ion-input type="password" formControlName="password"></ion-input>
             </ion-item>
         </ion-list>

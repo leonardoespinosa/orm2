@@ -17,6 +17,7 @@ page-signin {
                 background-color: #3cbda1;
                 color: white;
                 border-radius: 20px;
+                height: 1rem;
             }
 
             .pwd {
@@ -24,10 +25,13 @@ page-signin {
                 color: white;
                 border-radius: 20px;
                 margin-top: 1rem;
+                height: 1rem;
             }
 
             .lbl {
-                color: white;
+                margin-left: 2.1rem;
+                color: #606060;
+                margin-bottom: 7px;
             }
 
             .btn-signin {
@@ -42,7 +46,7 @@ page-signin {
         }
 
         .register-msg {
-            margin-top: 10rem;
+            margin-top: 4rem;
             text-align: center;
         }
     }

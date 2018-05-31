@@ -11,6 +11,8 @@ import { PAGES_DECLARATIONS } from './index';
 import { AccessServiceProvider } from '../providers/access-service';
 
 import { Device } from '@ionic-native/device';
+import { Media } from '@ionic-native/media';
+import { File } from '@ionic-native/file';
 
 @NgModule({
   declarations: [
@@ -22,7 +24,7 @@ import { Device } from '@ionic-native/device';
     IonicModule.forRoot(MyApp, {
       platforms: {
         android: {
-          tabsPlacement: 'top',
+          tabsPlacement: 'bottom',
           tabsHideOnSubPages: true
         },
         ios: {
@@ -45,7 +47,9 @@ import { Device } from '@ionic-native/device';
     Device,
     Network,
     { provide: ErrorHandler, useClass: IonicErrorHandler },
-    AccessServiceProvider
+    AccessServiceProvider,
+    Media,
+    File
   ]
 })
 export class AppModule { }

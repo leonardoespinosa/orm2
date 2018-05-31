@@ -14,3 +14,27 @@
 // To declare rules for a specific mode, create a child rule
 // for the .md, .ios, or .wp mode classes. The mode class is
 // automatically applied to the <body> element in the app.
+$primary-color: #08ad9f !important;
+
+.toolbar-background-md {
+    background: $primary-color;
+}
+
+.toolbar-background-ios {
+    background: $primary-color;
+}
+
+.nav-logo{
+    width: 6rem;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    margin-top: 4px;
+}
+
+p {
+    color: #606060;
+}
+
+h3 {
+    color: #5e280d;
+}
