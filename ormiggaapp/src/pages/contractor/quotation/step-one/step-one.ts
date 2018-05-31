@@ -9,65 +9,67 @@ import { File } from '@ionic-native/file';
 })
 export class StepOnePage {
 
-    private recording: boolean = false;
-    private filePath: string;
-    private fileName: string;
-    private audio: MediaObject;
-    private audioList: any[] = [];
+    private _recording: boolean = false;
+    private _filePath: string;
+    private _fileName: string;
+    private _audio: MediaObject;
+    private _audioList: any[] = [];
 
     constructor(public _navCtrl: NavController,
-        private media: Media,
-        private file: File,
-        public platform: Platform) {
+        private _media: Media,
+        private _file: File,
+        public _platform: Platform) {
 
     }
 
-    ionViewWillEnter() {
-        this.getAudioList();
-    }
-
+    /**
+     * Function to cancel quotation creation
+     */
     cancel(): void {
         this._navCtrl.pop();
     }
 
-    getAudioList() {
-        if (localStorage.getItem("audiolist")) {
-            this.audioList = JSON.parse(localStorage.getItem("audiolist"));
+    /**
+     * Function to start audio record
+     */
+    startRecord(): void {
+        if (this._platform.is('ios')) {
+            this._fileName = 'record' + new Date().getDate() + new Date().getMonth() + new Date().getFullYear() + new Date().getHours() + new Date().getMinutes() + new Date().getSeconds() + '.m4a';
+            this._filePath = this._file.documentsDirectory.replace(/file:\/\//g, '') + this._fileName;
+            this._audio = this._media.create(this._filePath);
+        } else if (this._platform.is('android')) {
+            this._fileName = 'record' + new Date().getDate() + new Date().getMonth() + new Date().getFullYear() + new Date().getHours() + new Date().getMinutes() + new Date().getSeconds() + '.3gp';
+            this._filePath = this._file.externalDataDirectory.replace(/file:\/\//g, '') + this._fileName;
+            this._audio = this._media.create(this._filePath);
         }
+        this._audio.startRecord();
+        this._recording = true;
     }
 
-    startRecord() {
-        if (this.platform.is('ios')) {
-            this.fileName = 'record' + new Date().getDate() + new Date().getMonth() + new Date().getFullYear() + new Date().getHours() + new Date().getMinutes() + new Date().getSeconds() + '.m4a';
-            this.filePath = this.file.documentsDirectory.replace(/file:\/\//g, '') + this.fileName;
-            this.audio = this.media.create(this.filePath);
-        } else if (this.platform.is('android')) {
-            this.fileName = 'record' + new Date().getDate() + new Date().getMonth() + new Date().getFullYear() + new Date().getHours() + new Date().getMinutes() + new Date().getSeconds() + '.3gp';
-            this.filePath = this.file.externalDataDirectory.replace(/file:\/\//g, '') + this.fileName;
-            this.audio = this.media.create(this.filePath);
-        }
-        this.audio.startRecord();
-        this.recording = true;
+    /**
+     * Function to stop audio record
+     */
+    stopRecord(): void {
+        this._audio.stopRecord();
+        let data = { filename: this._fileName };
+        this._audioList.push(data);
+        this._recording = false;
     }
 
-    stopRecord() {
-        this.audio.stopRecord();
-        let data = { filename: this.fileName };
-        this.audioList.push(data);
-        localStorage.setItem("audiolist", JSON.stringify(this.audioList));
-        this.recording = false;
-        this.getAudioList();
-    }
-
-    playAudio(file, idx) {
-        if (this.platform.is('ios')) {
-            this.filePath = this.file.documentsDirectory.replace(/file:\/\//g, '') + file;
-            this.audio = this.media.create(this.filePath);
-        } else if (this.platform.is('android')) {
-            this.filePath = this.file.externalDataDirectory.replace(/file:\/\//g, '') + file;
-            this.audio = this.media.create(this.filePath);
+    /**
+     * Function to reproduce audio record
+     * @param {number} file 
+     * @param {string} idx 
+     */
+    playAudio(file: string, idx: number): void {
+        if (this._platform.is('ios')) {
+            this._filePath = this._file.documentsDirectory.replace(/file:\/\//g, '') + file;
+            this._audio = this._media.create(this._filePath);
+        } else if (this._platform.is('android')) {
+            this._filePath = this._file.externalDataDirectory.replace(/file:\/\//g, '') + file;
+            this._audio = this._media.create(this._filePath);
         }
-        this.audio.play();
-        this.audio.setVolume(0.8);
+        this._audio.play();
+        this._audio.setVolume(0.8);
     }
 }
