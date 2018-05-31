@@ -33,20 +33,17 @@ export class StepOnePage {
     getAudioList() {
         if (localStorage.getItem("audiolist")) {
             this.audioList = JSON.parse(localStorage.getItem("audiolist"));
-            console.log(this.audioList);
         }
     }
 
     startRecord() {
         if (this.platform.is('ios')) {
             this.fileName = 'record' + new Date().getDate() + new Date().getMonth() + new Date().getFullYear() + new Date().getHours() + new Date().getMinutes() + new Date().getSeconds() + '.m4a';
-            //this.filePath = this.file.documentsDirectory.replace(/file:\/\//g, '') + this.fileName;
-            this.filePath = 'file:///data/user/0/com.ormigga/files/' + this.fileName;
+            this.filePath = this.file.documentsDirectory.replace(/file:\/\//g, '') + this.fileName;
             this.audio = this.media.create(this.filePath);
         } else if (this.platform.is('android')) {
             this.fileName = 'record' + new Date().getDate() + new Date().getMonth() + new Date().getFullYear() + new Date().getHours() + new Date().getMinutes() + new Date().getSeconds() + '.3gp';
-            //this.filePath = this.file.externalDataDirectory.replace(/file:\/\//g, '') + this.fileName;
-            this.filePath = 'file:///storage/emulated/0/Android/data/com.ormigga/files/' + this.fileName;
+            this.filePath = this.file.externalDataDirectory.replace(/file:\/\//g, '') + this.fileName;
             this.audio = this.media.create(this.filePath);
         }
         this.audio.startRecord();
@@ -64,14 +61,13 @@ export class StepOnePage {
 
     playAudio(file, idx) {
         if (this.platform.is('ios')) {
-            //this.filePath = this.file.documentsDirectory.replace(/file:\/\//g, '') + file;
-            this.filePath = 'file:///data/user/0/com.ormigga/files/' + file;
+            this.filePath = this.file.documentsDirectory.replace(/file:\/\//g, '') + file;
             this.audio = this.media.create(this.filePath);
         } else if (this.platform.is('android')) {
-            this.filePath = 'file:///storage/emulated/0/Android/data/com.ormigga/files/' + file;
+            this.filePath = this.file.externalDataDirectory.replace(/file:\/\//g, '') + file;
             this.audio = this.media.create(this.filePath);
         }
         this.audio.play();
-        //this.audio.setVolume(0.8);
+        this.audio.setVolume(0.8);
     }
 }
