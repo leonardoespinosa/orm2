@@ -4,7 +4,32 @@
     </ion-navbar>
 </ion-header>
 <ion-content padding>
-    <h3>Define exactamente los ítems, cantidades y tu presupuesto</h3>
+    <ion-fab right bottom>
+        <button ion-fab (click)="AddItem()">
+            <ion-icon name="add"></ion-icon>
+        </button>
+    </ion-fab>
+    <h4 style="text-align: center;">Define exactamente los ítems, cantidades y tu presupuesto</h4>
+    <ion-card *ngFor="let item of _items; let i = index">
+        <ion-card-content>
+            <!--ion-icon name="trash" style="float: right;color: red" (click)="deleteItem(i)"></ion-icon-->
+            <p style="font-weight: bold;">{{item.description}}</p>
+        </ion-card-content>
+        <ion-row>
+            <ion-col>
+                <button ion-button icon-left clear small>
+                    <ion-icon name="thumbs-up"></ion-icon>
+                    <div>{{item.quantity}} Unid</div>
+                </button>
+            </ion-col>
+            <ion-col *ngIf="item.valSuggest">
+                <button ion-button icon-left clear small>
+                    <ion-icon name="cash"></ion-icon>
+                    <div>$ {{item.valSuggest}}</div>
+                </button>
+            </ion-col>
+        </ion-row>
+    </ion-card>
 </ion-content>
 <ion-footer padding>
     <div align="center" class="buttons">

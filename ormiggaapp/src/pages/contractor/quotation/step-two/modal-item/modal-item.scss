@@ -1,0 +1,35 @@
+modal-item {
+    .toolbar-title-md {
+        color: white !important;
+    }
+
+    .bar-button-default-md, .bar-button-clear-md-default, .bar-button-md-default {
+        color: white !important;
+        background-color: transparent;
+    }
+
+    .toolbar-title-ios {
+        color: white !important;
+    }
+
+    .title {
+        color: white;
+    }
+
+    .cancel-btn {
+        color: #FFF;
+    }
+
+    .item {
+        padding-left: 0;
+    }
+
+    .lbl {
+        white-space: normal; 
+        color: #666 !important;
+    }
+
+    .msg-error {
+        color:red;
+    }
+}

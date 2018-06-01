@@ -1,0 +1,31 @@
+<ion-header>
+    <ion-toolbar>
+        <ion-title class="title">Agregar Item</ion-title>
+        <ion-buttons start>
+            <button ion-button (click)="close()">
+                <span ion-text class="cancel-btn" showWhen="ios">Cancelar</span>
+                <ion-icon name="md-close" showWhen="android, windows"></ion-icon>
+            </button>
+        </ion-buttons>
+    </ion-toolbar>
+</ion-header>
+<ion-content padding>
+    <ion-list>
+        <ion-item class="item">
+            <ion-label class="lbl" floating>Describe el item a cotizar</ion-label>
+            <ion-textarea rows="6" [(ngModel)]="_item.description" maxlength="280"></ion-textarea>
+        </ion-item>
+        <ion-item class="item">
+            <ion-label class="lbl" floating>Unidades</ion-label>
+            <ion-input type="number" [(ngModel)]="_item.quantity"></ion-input>
+        </ion-item>
+        <ion-item class="item">
+            <ion-label class="lbl" floating>Presupuesto</ion-label>
+            <ion-input type="number" [(ngModel)]="_item.valSuggest"></ion-input>
+        </ion-item>
+    </ion-list>
+    <button ion-button block outline (click)="closeWithNewItem()">
+        Adicionar Item
+    </button>
+    <p *ngIf="_showError" class="msg-error">{{_msgError}}</p>
+</ion-content>
