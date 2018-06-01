@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { NavController, Platform } from 'ionic-angular';
 import { Media, MediaObject } from '@ionic-native/media';
 import { File } from '@ionic-native/file';
+import { StepTwoPage } from '../step-two/step-two';
 
 @Component({
     selector: 'page-step-one',
@@ -45,6 +46,13 @@ export class StepOnePage implements OnInit {
     }
 
     /**
+     * Function to continue in step two
+     */
+    goToStepTwo(): void {
+        this._navCtrl.push(StepTwoPage);
+    }
+
+    /**
      * Function to start audio record
      */
     startRecord(): void {
@@ -70,6 +78,7 @@ export class StepOnePage implements OnInit {
         let data = { filename: this._fileName };
         this._audioList.push(data);
         this._recording = false;
+        // this.audioBlob = new Blob([this._audio], {type: 'audio/mp3'});
     }
 
     /**

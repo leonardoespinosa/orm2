@@ -1,22 +1,22 @@
 <ion-header>
     <ion-navbar>
-        <ion-title style="color: white">Paso 1 de 7</ion-title>
+        <ion-title class="title">Paso 1 de 7</ion-title>
     </ion-navbar>
 </ion-header>
 <ion-content padding>
     <h3>Indica que quieres!</h3>
-    <p style="text-align: justify;">Sé muy preciso; entre mejor expliques lo que necesitas, menos tendremos que hacerte preguntas después. Indica para
+    <p class="msg">Sé muy preciso; entre mejor expliques lo que necesitas, menos tendremos que hacerte preguntas después. Indica para
         qué lo usarás, materiales, colores, medidas, etc...</p>
-    <ion-input style="background-color: #eaeaea;" type="text" placeholder="Nombre Producto/Servicio"></ion-input>
-    <div style="background-color: #eaeaea;">
-        <ion-textarea style="height: 13rem;background-color: #eaeaea;" rows="8" placeholder="Escribe tu requerimiento"></ion-textarea>
-        <div style="text-align: -webkit-right;">
-            <ion-fab style="position: inherit;" *ngIf="!_recording">
+    <ion-input class="quotation" type="text" placeholder="Nombre Producto/Servicio"></ion-input>
+    <div class="quotation">
+        <ion-textarea class="quotation-desc" rows="8" placeholder="Escribe tu requerimiento"></ion-textarea>
+        <div class="record-audio">
+            <ion-fab class="record-btn" *ngIf="!_recording">
                 <button ion-fab mini (click)="startRecord()">
                     <ion-icon name="mic"></ion-icon>
                 </button>
             </ion-fab>
-            <ion-fab style="position: inherit;" *ngIf="_recording">
+            <ion-fab class="record-btn" *ngIf="_recording">
                 <button ion-fab mini (click)="stopRecord()">
                     <ion-icon name="mic-off"></ion-icon>
                 </button>
@@ -26,15 +26,18 @@
     <ion-list>
         <ion-item *ngFor="let audio of _audioList; index as i;">
             <p>{{audio.filename}}</p>
-            <button ion-button clear item-end large (click)="playAudio(audio.filename, i)">
+            <button ion-button clear item-end (click)="playAudio(audio.filename, i)">
                 <ion-icon name="play"></ion-icon>
+            </button>
+            <button ion-button clear item-end color="danger">
+                <ion-icon name="trash"></ion-icon>
             </button>
         </ion-item>
     </ion-list>
 </ion-content>
 <ion-footer padding>
-    <div align="center" style="display: flex">
-        <button ion-button outline style="width: 50%;" (click)="cancel()">Cancelar</button>
-        <button ion-button outline style="width: 50%;">Continuar</button>
+    <div align="center" class="buttons">
+        <button ion-button outline class="step-btn" (click)="cancel()">Cancelar</button>
+        <button ion-button outline class="step-btn" (click)="goToStepTwo()">Continuar</button>
     </div>
 </ion-footer>

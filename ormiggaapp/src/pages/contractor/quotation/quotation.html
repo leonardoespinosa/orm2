@@ -1,6 +1,6 @@
 <ion-header>
     <ion-navbar>
-        <ion-title style="text-align: center;">
+        <ion-title class="logo">
             <img class="nav-logo" src="assets/imgs/logo_gga.png">
         </ion-title>
     </ion-navbar>
@@ -8,8 +8,11 @@
 
 <ion-content padding>
     <h3>Crea una nueva cotizacion</h3>
-    <p style="text-align: justify;">Entre más detallado sea tu requerimiento en cada campo solicitado, con mayor precisión y rapidez podrán los proveedores
+    <p class="msg">Entre más detallado sea tu requerimiento en cada campo solicitado, con mayor precisión y rapidez podrán los proveedores
         enviarte la cotización.</p>
-    <p style="text-align: justify;">Podrás ahorrarte muchas preguntas que te hagan y así optimizarás tiempo.</p>
-    <button ion-button outline style="width: 100%;" (click)="goToStepOne()">Comienza ahora!</button>
+    <p class="msg">Podrás ahorrarte muchas preguntas que te hagan y así optimizarás tiempo.</p>
+    <div class="ormigga-img">
+        <img class="calixto" src="assets/imgs/Ormigga.png">
+    </div>
+    <button ion-button outline class="btn" (click)="goToStepOne()">Comienza ahora!</button>
 </ion-content>

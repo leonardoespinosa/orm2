@@ -3,4 +3,24 @@ page-quotation {
         margin-bottom: 0px !important;
         padding-bottom: 0px !important;
     }
+
+    .logo {
+        text-align: center;
+    }
+
+    .msg {
+        text-align: justify;
+    }
+
+    .ormigga-img {
+        text-align: center;
+
+        .calixto {
+            max-width: 40%;
+        }
+    }
+
+    .btn {
+        width: 100%;
+    }
 }
