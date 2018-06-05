@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { NavController, ModalController } from 'ionic-angular';
 import { ModalItem } from './modal-item/modal-item';
 import { Item } from '../../../../models/quotation/item.model';
+import { StepThreePage } from '../step-three/step-three';
 
 @Component({
     selector: 'page-step-two',
@@ -31,7 +32,7 @@ export class StepTwoPage {
      * Function to continue in step three
      */
     goToStepThree(): void {
-
+        this._navCtrl.push(StepThreePage);
     }
 
     /**

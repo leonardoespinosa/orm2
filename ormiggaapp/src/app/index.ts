@@ -6,6 +6,7 @@ import { ContractorOptionsPage } from '../pages/contractor/options/contractor-op
 import { StepOnePage } from '../pages/contractor/quotation/step-one/step-one';
 import { StepTwoPage } from '../pages/contractor/quotation/step-two/step-two';
 import { ModalItem } from '../pages/contractor/quotation/step-two/modal-item/modal-item';
+import { StepThreePage } from '../pages/contractor/quotation/step-three/step-three';
 
 export const PAGES_DECLARATIONS = [
     SigninPage,
@@ -15,5 +16,6 @@ export const PAGES_DECLARATIONS = [
     ContractorOptionsPage,
     StepOnePage,
     StepTwoPage,
-     ModalItem
+    ModalItem,
+    StepThreePage
 ];

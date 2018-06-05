@@ -16,11 +16,23 @@ page-step-two {
         color: white;
     }
 
+    .title-page {
+        text-align: center;
+    }
+
+    .img {
+        margin-top: 5rem;
+    }
+
     .buttons {
         display: flex;
 
         .step-btn {
             width: 50%;
         }
+    }
+
+    .item-description {
+        font-weight: bold;
     }
 }

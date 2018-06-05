@@ -9,11 +9,12 @@
             <ion-icon name="add"></ion-icon>
         </button>
     </ion-fab>
-    <h4 style="text-align: center;">Define exactamente los ítems, cantidades y tu presupuesto</h4>
+    <h4 class="title-page">Define exactamente los ítems, cantidades y tu presupuesto</h4>
+    <img *ngIf="_items.length === 0" class="img" src="assets/imgs/icono-card.png">
     <ion-card *ngFor="let item of _items; let i = index">
         <ion-card-content>
             <!--ion-icon name="trash" style="float: right;color: red" (click)="deleteItem(i)"></ion-icon-->
-            <p style="font-weight: bold;">{{item.description}}</p>
+            <p class="item-description">{{item.description}}</p>
         </ion-card-content>
         <ion-row>
             <ion-col>
