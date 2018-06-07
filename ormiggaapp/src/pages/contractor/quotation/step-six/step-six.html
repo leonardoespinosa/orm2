@@ -1,0 +1,46 @@
+<ion-header>
+    <ion-navbar>
+        <ion-title class="title">Paso 6 de 7</ion-title>
+    </ion-navbar>
+</ion-header>
+<ion-content padding>
+    <h4 class="title-page">¿Cómo pagarás?</h4>
+    <p>Escoge hasta 3 y la suma debe ser de 100% exactamente</p>
+    <ion-list>
+        <ion-item class="item">
+            <ion-label class="lbl">Anticipo:</ion-label>
+            <ion-input type="number" min="0" max="100" [(ngModel)]="_advance"></ion-input>
+            <ion-input type="text" value="%" disabled></ion-input>
+        </ion-item>
+        <ion-item class="item">
+            <ion-label class="lbl">Contra Entrega:</ion-label>
+            <ion-input type="number" min="0" max="100" [(ngModel)]="_upon_delivery"></ion-input>
+            <ion-input type="text" value="%" disabled></ion-input>
+        </ion-item>
+        <ion-item class="item">
+            <ion-label class="lbl">En 30 días:</ion-label>
+            <ion-input type="number" min="0" max="100" [(ngModel)]="_30_days"></ion-input>
+            <ion-input type="text" value="%" disabled></ion-input>
+        </ion-item>
+        <ion-item class="item">
+            <ion-label class="lbl">En 60 días:</ion-label>
+            <ion-input type="number" min="0" max="100" [(ngModel)]="_60_days"></ion-input>
+            <ion-input type="text" value="%" disabled></ion-input>
+        </ion-item>
+        <ion-item class="item">
+            <ion-label class="lbl">En 90 días:</ion-label>
+            <ion-input type="number" min="0" max="100" [(ngModel)]="_90_days"></ion-input>
+            <ion-input type="text" value="%" disabled></ion-input>
+        </ion-item>
+        <ion-item class="msg-confirm">
+            <ion-label class="lbl-confirm">Así sea una excelente oferta, no puedo aceptar otra forma de pago</ion-label>
+            <ion-checkbox></ion-checkbox>
+        </ion-item>
+    </ion-list>
+</ion-content>
+<ion-footer padding>
+    <div align="center" class="buttons">
+        <button ion-button outline class="step-btn" (click)="goToStepFive()">Anterior</button>
+        <button ion-button outline class="step-btn" (click)="goToStepSeven()">Continuar</button>
+    </div>
+</ion-footer>

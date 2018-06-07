@@ -1,0 +1,46 @@
+page-step-six {
+    .toolbar-title-md {
+        color: white !important;
+    }
+
+    .bar-button-default-md, .bar-button-clear-md-default, .bar-button-md-default {
+        color: white !important;
+        background-color: transparent;
+    }
+
+    .toolbar-title-ios {
+        color: white !important;
+    }
+
+    .title {
+        color: white;
+    }
+
+    .title-page {
+        text-align: center;
+    }
+
+    .buttons {
+        display: flex;
+
+        .step-btn {
+            width: 50%;
+        }
+    }
+
+    .item {
+        padding-left: 0;
+
+        .lbl {
+            width: 15rem;
+        }
+    }
+
+    .msg-confirm {
+        margin-top: 1rem;
+
+        .lbl-confirm {
+            white-space: normal;
+        }
+    }
+}

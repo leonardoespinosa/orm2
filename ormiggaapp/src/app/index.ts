@@ -9,6 +9,7 @@ import { ModalItem } from '../pages/contractor/quotation/step-two/modal-item/mo
 import { StepThreePage } from '../pages/contractor/quotation/step-three/step-three';
 import { StepFourPage } from '../pages/contractor/quotation/step-four/step-four';
 import { StepFivePage } from '../pages/contractor/quotation/step-five/step-five';
+import { StepSixPage } from '../pages/contractor/quotation/step-six/step-six';
 
 export const PAGES_DECLARATIONS = [
     SigninPage,
@@ -21,5 +22,6 @@ export const PAGES_DECLARATIONS = [
     ModalItem,
     StepThreePage,
     StepFourPage,
-    StepFivePage
+    StepFivePage,
+    StepSixPage
 ];
