@@ -15,7 +15,7 @@ export class AccessServiceProvider {
         'Accept': 'application/json',
         'Authorization': `Bearer ${this.getToken()}`
     });
-    private apiUrl = 'http://192.168.0.31:3001';
+    private apiUrl = 'http://localhost:3001';
 
     /**
      * AccessService Constructor

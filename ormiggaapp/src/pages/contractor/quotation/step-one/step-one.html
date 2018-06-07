@@ -4,25 +4,29 @@
     </ion-navbar>
 </ion-header>
 <ion-content padding>
+    <ion-fab right bottom *ngIf="!_recording">
+        <button ion-fab (click)="startRecord()">
+            <ion-icon name="mic"></ion-icon>
+        </button>
+    </ion-fab>
+    <ion-fab right bottom *ngIf="_recording">
+        <button ion-fab (click)="stopRecord()">
+            <ion-icon name="mic-off"></ion-icon>
+        </button>
+    </ion-fab>
     <h3 class="title-page">Indica que quieres!</h3>
     <p class="msg">Sé muy preciso; entre mejor expliques lo que necesitas, menos tendremos que hacerte preguntas después. Indica para
         qué lo usarás, materiales, colores, medidas, etc...</p>
-    <ion-input class="quotation" type="text" placeholder="Nombre Producto/Servicio"></ion-input>
-    <div class="quotation">
-        <ion-textarea class="quotation-desc" rows="8" placeholder="Escribe tu requerimiento"></ion-textarea>
-        <div class="record-audio">
-            <ion-fab class="record-btn" *ngIf="!_recording">
-                <button ion-fab mini (click)="startRecord()">
-                    <ion-icon name="mic"></ion-icon>
-                </button>
-            </ion-fab>
-            <ion-fab class="record-btn" *ngIf="_recording">
-                <button ion-fab mini (click)="stopRecord()">
-                    <ion-icon name="mic-off"></ion-icon>
-                </button>
-            </ion-fab>
-        </div>
-    </div>
+    <ion-list>
+        <ion-item class="item">
+            <ion-label class="lbl" floating>Nombre Producto/Servicio</ion-label>
+            <ion-input type="text"></ion-input>
+        </ion-item>
+        <ion-item class="item">
+            <ion-label class="lbl" floating>Escribe tu requerimiento</ion-label>
+            <ion-textarea rows="6"></ion-textarea>
+        </ion-item>
+    </ion-list>
     <ion-list>
         <ion-item *ngFor="let audio of _audioList; index as i;">
             <p>{{audio.filename}}</p>

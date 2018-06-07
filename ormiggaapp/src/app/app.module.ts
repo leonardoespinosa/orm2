@@ -13,6 +13,8 @@ import { AccessServiceProvider } from '../providers/access-service';
 import { Device } from '@ionic-native/device';
 import { Media } from '@ionic-native/media';
 import { File } from '@ionic-native/file';
+import { FileTransfer, FileTransferObject } from '@ionic-native/file-transfer';
+import { Camera } from '@ionic-native/camera';
 
 @NgModule({
   declarations: [
@@ -49,7 +51,10 @@ import { File } from '@ionic-native/file';
     { provide: ErrorHandler, useClass: IonicErrorHandler },
     AccessServiceProvider,
     Media,
-    File
+    File,
+    FileTransfer,
+    FileTransferObject,
+    Camera
   ]
 })
 export class AppModule { }

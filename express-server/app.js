@@ -48,14 +48,14 @@ function createConnection(req, res, next) {
  */
 function handleError(res) {
     return function(error) {
-        res.send(500, {error: error.message});
+        res.send(500, {error: 'Base de Datos no conectada -> ' + error.message});
     }
 }
 
 app.use('/api', ormiggaRoutes);
-/*app.get('/', (req, res) => {
-    return res.end('Api working');
-});*/
+app.get('/', (req, res) => {
+    return res.end('Ormigga Api working');
+});
 
 // catch 404
 app.use((req, res, next) => {

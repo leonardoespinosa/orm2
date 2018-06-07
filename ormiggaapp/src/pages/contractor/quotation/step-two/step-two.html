@@ -10,10 +10,13 @@
         </button>
     </ion-fab>
     <h4 class="title-page">Define exactamente los ítems, cantidades y tu presupuesto</h4>
-    <img *ngIf="_items.length === 0" class="img" src="assets/imgs/icono-card.png">
+    <div *ngIf="_items.length === 0" class="no-info">
+        <img class="img" src="assets/imgs/icono-card.png">
+        <p>Aun no has agregado items</p>
+    </div>
     <ion-card *ngFor="let item of _items; let i = index">
         <ion-card-content>
-            <!--ion-icon name="trash" style="float: right;color: red" (click)="deleteItem(i)"></ion-icon-->
+            <ion-icon name="trash" style="float: right;color: red" (click)="deleteItem(i)"></ion-icon>
             <p class="item-description">{{item.description}}</p>
         </ion-card-content>
         <ion-row>

@@ -22,22 +22,7 @@ page-step-one {
 
     .msg {
         text-align: justify;
-    }
-
-    .quotation {
-        background-color: #eaeaea;
-    }
-
-    .quotation-desc {
-        background-color: #eaeaea;
-    }
-
-    .record-audio {
-        text-align: -webkit-right;
-
-        .record-btn {
-            position: inherit;
-        }
+        margin: 0;
     }
 
     .buttons {
@@ -46,5 +31,14 @@ page-step-one {
         .step-btn {
             width: 50%;
         }
+    }
+
+    .item {
+        padding-left: 0;
+    }
+
+    .lbl {
+        white-space: normal; 
+        color: #666 !important;
     }
 }
