@@ -29,10 +29,11 @@ page-step-two {
     }
 
     .buttons {
-        display: flex;
-
+        box-shadow: 0 -2px 2px -2px #666 !important;
+        background: whitesmoke;
+        
         .step-btn {
-            width: 50%;
+            width: 48%;
         }
     }
 

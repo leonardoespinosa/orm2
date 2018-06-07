@@ -1,0 +1,21 @@
+<ion-header>
+    <ion-navbar>
+        <ion-title class="title">Paso 7 de 7</ion-title>
+    </ion-navbar>
+</ion-header>
+<ion-content padding>
+    <h4 class="title-page">Ordena de arriba a abajo qué importancia tendrá cada criterio al momento de decidir tu compra</h4>
+    <div [dragula]='"first-bag"' [dragulaModel]='items'>
+        <ion-card *ngFor="let item of items" id="{{ item.name }}">
+            <ion-card-content>
+                {{ item.name }}
+            </ion-card-content>
+        </ion-card>
+    </div>
+</ion-content>
+<ion-footer padding class="buttons">
+    <div align="center">
+        <button ion-button outline class="step-btn" (click)="goToStepSix()">Anterior</button>
+        <button ion-button outline class="step-btn" (click)="createQuotation()">Finalizar</button>
+    </div>
+</ion-footer>

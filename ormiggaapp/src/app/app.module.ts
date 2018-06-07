@@ -5,6 +5,7 @@ import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { Network } from '@ionic-native/network';
+import { DragulaModule } from 'ng2-dragula/ng2-dragula';
 
 import { MyApp } from './app.component';
 import { PAGES_DECLARATIONS } from './index';
@@ -36,7 +37,8 @@ import { Camera } from '@ionic-native/camera';
         }
       }
     }),
-    HttpClientModule
+    HttpClientModule,
+    DragulaModule
   ],
   bootstrap: [IonicApp],
   entryComponents: [
