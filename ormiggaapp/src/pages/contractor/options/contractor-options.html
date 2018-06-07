@@ -5,13 +5,23 @@
         </ion-title>
     </ion-navbar>
 </ion-header>
-
-<ion-content>
+<ion-content padding>
     <ion-list>
-        <ion-list-header>Follow us on Twitter</ion-list-header>
-        <ion-item>
-            <ion-icon name="ionic" item-start></ion-icon>
-            @ionicframework
-        </ion-item>
+        <button ion-item>
+            <ion-icon name="person" item-start class="profile-icon"></ion-icon>
+            {{_currentUser.username}}
+        </button>
+        <button ion-item>
+            <ion-icon name="mail" item-start class="inbox-icon"></ion-icon>
+            Bandeja de Entrada
+        </button>
+        <button ion-item>
+            <ion-icon name="settings" item-start class="settings-icon"></ion-icon>
+            Configuracion
+        </button>
+        <button ion-item (click)="logout()">
+            <ion-icon name="exit" item-start class="logout-icon"></ion-icon>
+            Cerrar Sesion
+        </button>
     </ion-list>
 </ion-content>
