@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { NavController } from 'ionic-angular';
+import { StepFourPage } from '../step-four/step-four';
 
 @Component({
     selector: 'page-step-three',
@@ -22,6 +23,6 @@ export class StepThreePage {
      * Function to continue in step four
      */
     goToStepFour(): void {
-
+        this._navCtrl.push(StepFourPage);
     }
 }

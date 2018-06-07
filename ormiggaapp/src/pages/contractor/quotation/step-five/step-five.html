@@ -1,0 +1,18 @@
+<ion-header>
+    <ion-navbar>
+        <ion-title class="title">Paso 5 de 7</ion-title>
+    </ion-navbar>
+</ion-header>
+<ion-content padding>
+    <h4 class="title-page">¿Qué día y hora necesitas que se te entrege el producto / servicio?</h4>
+    <div style="text-align: center;margin-top: 5rem;">
+        <i style="font-size: 10em;color: #08ad9f;" class="fa fa-handshake-o" aria-hidden="true"></i>
+    </div>
+    <ion-datetime class="current-day" displayFormat="DD/MMM/YYYY HH:mm" [(ngModel)]="_today"></ion-datetime>
+</ion-content>
+<ion-footer padding>
+    <div align="center" class="buttons">
+        <button ion-button outline class="step-btn" (click)="goToStepFour()">Anterior</button>
+        <button ion-button outline class="step-btn" (click)="goToStepSix()">Continuar</button>
+    </div>
+</ion-footer>

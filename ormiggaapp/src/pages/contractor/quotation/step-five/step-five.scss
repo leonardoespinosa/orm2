@@ -1,0 +1,36 @@
+page-step-five {
+    .toolbar-title-md {
+        color: white !important;
+    }
+
+    .bar-button-default-md, .bar-button-clear-md-default, .bar-button-md-default {
+        color: white !important;
+        background-color: transparent;
+    }
+
+    .toolbar-title-ios {
+        color: white !important;
+    }
+
+    .title {
+        color: white;
+    }
+
+    .title-page {
+        text-align: center;
+    }
+
+    .buttons {
+        display: flex;
+
+        .step-btn {
+            width: 50%;
+        }
+    }
+
+    .current-day {
+        font-size: 3rem;
+        text-align: center;
+        color: #666;
+    }
+}
