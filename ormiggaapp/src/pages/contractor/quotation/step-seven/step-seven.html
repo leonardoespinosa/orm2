@@ -4,9 +4,11 @@
     </ion-navbar>
 </ion-header>
 <ion-content padding>
-    <h4 class="title-page">Ordena de arriba a abajo qué importancia tendrá cada criterio al momento de decidir tu compra</h4>
+    <h4 class="title-page">Evaluacion de proveedores</h4>
+    <p class="msg">Ordena de arriba a abajo qué importancia tendrá cada criterio al momento de decidir tu compra</p>
+    <p></p>
     <div [dragula]='"first-bag"' [dragulaModel]='items'>
-        <ion-card *ngFor="let item of items" id="{{ item.name }}">
+        <ion-card *ngFor="let item of items" id="{{ item.name }}" class="card-info">
             <ion-card-content>
                 {{ item.name }}
             </ion-card-content>

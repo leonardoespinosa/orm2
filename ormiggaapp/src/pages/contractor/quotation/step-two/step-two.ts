@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
-import { NavController, ModalController } from 'ionic-angular';
+import { NavController, ModalController, AlertController, Platform } from 'ionic-angular';
+import { Subscription } from 'rxjs';
+import { Network } from '@ionic-native/network';
 import { ModalItem } from './modal-item/modal-item';
 import { Item } from '../../../../models/quotation/item.model';
 import { StepThreePage } from '../step-three/step-three';
@@ -11,14 +13,28 @@ import { StepThreePage } from '../step-three/step-three';
 export class StepTwoPage {
 
     private _items: Item[] = [];
+    private disconnectSubscription: Subscription;
 
     /**
      * StepTwoPage Constructor
      * @param {NavController} _navCtrl 
      * @param {ModalController} _modalCtrl 
+     * @param {AlertController} _alertCtrl
+     * @param {Platform} _platform
+     * @param {Network} _network
      */
     constructor(public _navCtrl: NavController,
-        public _modalCtrl: ModalController) {
+        public _modalCtrl: ModalController,
+        public _alertCtrl: AlertController,
+        public _platform: Platform,
+        private _network: Network) {
+    }
+
+    /**
+     * ionViewWillLeave Implementation
+     */
+    ionViewWillLeave() {
+        this.disconnectSubscription.unsubscribe();
     }
 
     /**
@@ -55,5 +71,61 @@ export class StepTwoPage {
      */
     deleteItem(_pItemIndex: number): void {
         this._items.splice(_pItemIndex, 1);
+    }
+
+    /** 
+     * This function verify the conditions on page did enter for internet and server connection
+     */
+    ionViewDidEnter() {
+        this.isConnected();
+        this.disconnectSubscription = this._network.onDisconnect().subscribe(data => {
+            let title = 'Error de red';
+            let subtitle = 'Por favor revisa tu conexión a internet e intenta de nuevo';
+            let btn = 'Reintentar';
+            this.presentAlert(title, subtitle, btn);
+        }, error => console.error(error));
+    }
+
+    /** 
+     * This function verify with network plugin if device has internet connection
+     */
+    isConnected() {
+        if (this._platform.is('cordova')) {
+            let conntype = this._network.type;
+            let validateConn = conntype && conntype !== 'unknown' && conntype !== 'none';
+            if (!validateConn) {
+                let title = 'Error de red';
+                let subtitle = 'Por favor revisa tu conexión a internet e intenta de nuevo';
+                let btn = 'Reintentar';
+                this.presentAlert(title, subtitle, btn);
+            } /*else {
+                if (!Meteor.status().connected) {
+                    let title2 = this.itemNameTraduction('MOBILE.SERVER_ALERT.TITLE');
+                    let subtitle2 = this.itemNameTraduction('MOBILE.SERVER_ALERT.SUBTITLE');
+                    let btn2 = this.itemNameTraduction('MOBILE.SERVER_ALERT.BTN');
+                    this.presentAlert(title2, subtitle2, btn2);
+                }
+            }*/
+        }
+    }
+
+    /**
+     * Present the alert for advice to internet
+     */
+    presentAlert(_pTitle: string, _pSubtitle: string, _pBtn: string) {
+        let alert = this._alertCtrl.create({
+            title: _pTitle,
+            subTitle: _pSubtitle,
+            enableBackdropDismiss: false,
+            buttons: [
+                {
+                    text: _pBtn,
+                    handler: () => {
+                        this.isConnected();
+                    }
+                }
+            ]
+        });
+        alert.present();
     }
 }
