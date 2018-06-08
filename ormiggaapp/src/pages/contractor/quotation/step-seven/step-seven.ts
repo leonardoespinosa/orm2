@@ -1,8 +1,9 @@
 import { Component } from '@angular/core';
-import { NavController, AlertController, Platform } from 'ionic-angular';
+import { NavController, AlertController, Platform, LoadingController, App } from 'ionic-angular';
 import { DragulaService } from 'ng2-dragula/ng2-dragula';
 import { Subscription } from 'rxjs';
 import { Network } from '@ionic-native/network';
+import { ContractorTabsPage } from '../../../contractor/tabs/contractor-tabs';
 
 @Component({
     selector: 'page-step-seven',
@@ -27,12 +28,16 @@ export class StepSevenPage {
      * @param {AlertController} _alertCtrl 
      * @param {Platform} _platform 
      * @param {Network} _network 
+     * @param {LoadingController} _loadingCtrl
+     * @param {App} _app
      */
     constructor(public _navCtrl: NavController,
         private _dragulaService: DragulaService,
         public _alertCtrl: AlertController,
         public _platform: Platform,
-        private _network: Network) {
+        private _network: Network,
+        public _loadingCtrl: LoadingController,
+        private _app: App) {
         _dragulaService.drag.subscribe((val) => { });
         _dragulaService.drop.subscribe((val) => {
             this.onDrop(val[2]);
@@ -70,7 +75,13 @@ export class StepSevenPage {
      * Function to create quotation
      */
     createQuotation(): void {
-
+        let loading_msg = 'Creando solicitud...';
+        let loading = this._loadingCtrl.create({ content: loading_msg });
+        loading.present();
+        setTimeout(() => {
+            this._app.getRootNavs()[0].setRoot(ContractorTabsPage);
+            loading.dismiss();
+        }, 1500);
     }
 
     /** 
