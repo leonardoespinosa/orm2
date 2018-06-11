@@ -44,6 +44,13 @@ function createConnection(req, res, next) {
 }
 
 /*
+ * Close the RethinkDB connection
+ */
+function closeConnection(req, res, next) {
+    req._rdbConn.close();
+}
+
+/*
  * Send back a 500 error
  */
 function handleError(res) {
@@ -61,5 +68,8 @@ app.get('/', (req, res) => {
 app.use((req, res, next) => {
     res.status(404).send('<h2 align=center>Page Not Found!</h2>');
 });
+
+// Middleware to close a connection to the database
+app.use(closeConnection);
 
 module.exports = app;
