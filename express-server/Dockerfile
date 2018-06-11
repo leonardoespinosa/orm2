@@ -14,5 +14,9 @@ ADD ./ /app
 RUN (cd /app && npm install)
 # Expone el puerto 8080 para acceder a la aplicacion
 EXPOSE 3001
+# Variables de entorno
+ENV DB_HOST=45.55.55.181
+ENV DB_PORT=28015
+ENV DB_NAME=ormigga
 # Ejecutar el comando node app.js
 CMD node ./bin/www
