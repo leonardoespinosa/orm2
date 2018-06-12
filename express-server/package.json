@@ -1,26 +1,34 @@
 {
-  "name": "express-server",
+  "name": "ormigga-server",
   "version": "1.0.0",
-  "description": "",
-  "main": "app.js",
+  "private": true,
+  "description": "Nodejs Server to Ormigga",
+  "main": "server.js",
   "scripts": {
-    "start": "node ./bin/www"
+    "start": "NODE_ENV=production node server.js",
+    "start-dev": "DEBUG=ormiggaserver:* nodemon server.js",
+    "lint": "standard --fix"
   },
-  "author": "",
-  "license": "ISC",
+  "author": "Leonardo Espinosa",
+  "license": "",
   "dependencies": {
     "atob": "2.1.1",
     "babel-preset-es2015-node6": "0.4.0",
     "babel-register": "6.26.0",
-    "body-parser": "1.18.2",
+    "chalk": "^2.4.1",
     "co": "4.6.0",
+    "debug": "^3.1.0",
     "express": "4.16.3",
+    "express-asyncify": "^1.0.0",
     "express-busboy": "6.0.1",
     "express-yields": "1.1.2",
     "jsonwebtoken": "8.2.1",
-    "morgan": "1.9.0",
     "rethinkdb": "2.3.3",
     "source-map-support": "0.5.5",
     "token-extractor": "0.1.6"
+  },
+  "devDependencies": {
+    "nodemon": "^1.17.5",
+    "standard": "^11.0.1"
   }
 }

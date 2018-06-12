@@ -97,7 +97,12 @@ export class SigninPage implements OnInit {
                     let subtitle = 'Vemos que no puedes entrar porque tu cuenta está en estos momentos suspendida. Si tienes dudas, comunícate a hola@ormigga.com';
                     let btn = 'Aceptar';
                     this.presentAlert(title, subtitle, btn);
-                } else if (result.status == 0) {
+                } else if (result.status == -4) {
+                    let title = '¡Oops! Se esta presentando un problema';
+                    let subtitle = 'Por favor contacta con el administrador';
+                    let btn = 'Aceptar';
+                    this.presentAlert(title, subtitle, btn);
+                }else if (result.status == 0) {
                     let title = '¡Oops! Aún no has activado tu cuenta';
                     let subtitle = 'Ingresa a tu correo para hacerlo, o solicita nuevamente el correo de activación';
                     let btn = 'Aceptar';
