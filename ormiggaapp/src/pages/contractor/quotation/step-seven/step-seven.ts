@@ -4,6 +4,7 @@ import { DragulaService } from 'ng2-dragula/ng2-dragula';
 import { Subscription } from 'rxjs';
 import { Network } from '@ionic-native/network';
 import { ContractorTabsPage } from '../../../contractor/tabs/contractor-tabs';
+import { AccessServiceProvider } from '../../../../providers/access-service';
 
 @Component({
     selector: 'page-step-seven',
@@ -30,6 +31,7 @@ export class StepSevenPage {
      * @param {Network} _network 
      * @param {LoadingController} _loadingCtrl
      * @param {App} _app
+     * @param {AccessServiceProvider} _accessService
      */
     constructor(public _navCtrl: NavController,
         private _dragulaService: DragulaService,
@@ -37,7 +39,8 @@ export class StepSevenPage {
         public _platform: Platform,
         private _network: Network,
         public _loadingCtrl: LoadingController,
-        private _app: App) {
+        private _app: App,
+        private _accessService: AccessServiceProvider) {
         _dragulaService.drag.subscribe((val) => { });
         _dragulaService.drop.subscribe((val) => {
             this.onDrop(val[2]);
@@ -109,14 +112,16 @@ export class StepSevenPage {
                 let subtitle = 'Por favor revisa tu conexión a internet e intenta de nuevo';
                 let btn = 'Reintentar';
                 this.presentAlert(title, subtitle, btn);
-            } /*else {
-                if (!Meteor.status().connected) {
-                    let title2 = this.itemNameTraduction('MOBILE.SERVER_ALERT.TITLE');
-                    let subtitle2 = this.itemNameTraduction('MOBILE.SERVER_ALERT.SUBTITLE');
-                    let btn2 = this.itemNameTraduction('MOBILE.SERVER_ALERT.BTN');
-                    this.presentAlert(title2, subtitle2, btn2);
-                }
-            }*/
+            } else {
+                this._accessService.verifyApiConnection().subscribe((result) => { }, (err) => {
+                    if (err.status === 0) {
+                        let title2 = 'Error de servicio!';
+                        let subtitle2 = 'En este momento el servicio de Ormigga no se encuentra disponible. por favor intenta de nuevo.'
+                        let btn2 = 'Reintentar'
+                        this.presentAlert(title2, subtitle2, btn2);
+                    }
+                });
+            }
         }
     }
 

@@ -15,7 +15,7 @@ export class AccessServiceProvider {
         'Accept': 'application/json',
         'Authorization': `Bearer ${this.getToken()}`
     });
-    private apiUrl = 'http://localhost:3001';
+    private apiUrl = 'http://192.168.0.5:3001';
     //private apiUrl = 'http://192.168.0.31:3001';
     //private apiUrl = 'http://35.231.100.202:3001';
 
@@ -116,7 +116,7 @@ export class AccessServiceProvider {
      * @param {string} type 
      * @param {string} user 
      */
-    private request(method: 'post' | 'get', type: 'login' | 'register', user?: Object): Observable<any> {
+    private request(method: 'post' | 'get', type: 'login' | 'register' | '', user?: Object): Observable<any> {
         let base;
         if (method === 'post') {
             base = this.http.post(this.apiUrl + `/api/${type}`, user);
@@ -126,6 +126,10 @@ export class AccessServiceProvider {
 
         const request = base.pipe(retry(3));
         return request;
+    }
+
+    public verifyApiConnection(): Observable<any> {
+        return this.request('get', '');
     }
 
     /**

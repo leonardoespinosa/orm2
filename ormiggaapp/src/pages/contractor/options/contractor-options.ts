@@ -84,14 +84,16 @@ export class ContractorOptionsPage implements OnInit {
                 let subtitle = 'Por favor revisa tu conexión a internet e intenta de nuevo';
                 let btn = 'Reintentar';
                 this.presentAlert(title, subtitle, btn);
-            } /*else {
-                if (!Meteor.status().connected) {
-                    let title2 = this.itemNameTraduction('MOBILE.SERVER_ALERT.TITLE');
-                    let subtitle2 = this.itemNameTraduction('MOBILE.SERVER_ALERT.SUBTITLE');
-                    let btn2 = this.itemNameTraduction('MOBILE.SERVER_ALERT.BTN');
-                    this.presentAlert(title2, subtitle2, btn2);
-                }
-            }*/
+            } else {
+                this._accessService.verifyApiConnection().subscribe((result) => { }, (err) => {
+                    if (err.status === 0) {
+                        let title2 = 'Error de servicio!';
+                        let subtitle2 = 'En este momento el servicio de Ormigga no se encuentra disponible. por favor intenta de nuevo.'
+                        let btn2 = 'Reintentar'
+                        this.presentAlert(title2, subtitle2, btn2);
+                    }
+                });
+            }
         }
     }
 

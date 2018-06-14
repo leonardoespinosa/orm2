@@ -4,6 +4,7 @@ import { Media, MediaObject } from '@ionic-native/media';
 import { File } from '@ionic-native/file';
 import { Network } from '@ionic-native/network';
 import { Subscription } from 'rxjs';
+import { AccessServiceProvider } from '../../../../providers/access-service';
 import { StepTwoPage } from '../step-two/step-two';
 
 @Component({
@@ -28,13 +29,15 @@ export class StepOnePage implements OnInit {
      * @param {Platform} _platform 
      * @param {Network} _network
      * @param {AlertController} _alertCtrl
+     * @param {AccessServiceProvider} _accessService
      */
     constructor(public _navCtrl: NavController,
         private _media: Media,
         private _file: File,
         public _platform: Platform,
         private _network: Network,
-        public _alertCtrl: AlertController) {
+        public _alertCtrl: AlertController,
+        private _accessService: AccessServiceProvider) {
 
     }
 
@@ -137,14 +140,16 @@ export class StepOnePage implements OnInit {
                 let subtitle = 'Por favor revisa tu conexión a internet e intenta de nuevo';
                 let btn = 'Reintentar';
                 this.presentAlert(title, subtitle, btn);
-            } /*else {
-                if (!Meteor.status().connected) {
-                    let title2 = this.itemNameTraduction('MOBILE.SERVER_ALERT.TITLE');
-                    let subtitle2 = this.itemNameTraduction('MOBILE.SERVER_ALERT.SUBTITLE');
-                    let btn2 = this.itemNameTraduction('MOBILE.SERVER_ALERT.BTN');
-                    this.presentAlert(title2, subtitle2, btn2);
-                }
-            }*/
+            } else {
+                this._accessService.verifyApiConnection().subscribe((result) => { }, (err) => {
+                    if (err.status === 0) {
+                        let title2 = 'Error de servicio!';
+                        let subtitle2 = 'En este momento el servicio de Ormigga no se encuentra disponible. por favor intenta de nuevo.'
+                        let btn2 = 'Reintentar'
+                        this.presentAlert(title2, subtitle2, btn2);
+                    }
+                });
+            }
         }
     }
 

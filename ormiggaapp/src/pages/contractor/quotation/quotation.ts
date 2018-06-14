@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { NavController, AlertController, Platform } from 'ionic-angular';
 import { Network } from '@ionic-native/network';
 import { Subscription } from 'rxjs';
+import { AccessServiceProvider } from '../../../providers/access-service';
 import { StepOnePage } from './step-one/step-one';
 
 @Component({
@@ -18,11 +19,13 @@ export class QuotationPage {
    * @param {AlertController} _alertCtrl 
    * @param {Platform} _platform 
    * @param {Network} _network 
+   * @param {AccessServiceProvider} _accessService
    */
   constructor(public navCtrl: NavController,
     public _alertCtrl: AlertController,
     public _platform: Platform,
-    private _network: Network ) {
+    private _network: Network,
+    private _accessService: AccessServiceProvider) {
 
   }
 
@@ -65,14 +68,16 @@ export class QuotationPage {
         let subtitle = 'Por favor revisa tu conexión a internet e intenta de nuevo';
         let btn = 'Reintentar';
         this.presentAlert(title, subtitle, btn);
-      } /*else {
-              if (!Meteor.status().connected) {
-                  let title2 = this.itemNameTraduction('MOBILE.SERVER_ALERT.TITLE');
-                  let subtitle2 = this.itemNameTraduction('MOBILE.SERVER_ALERT.SUBTITLE');
-                  let btn2 = this.itemNameTraduction('MOBILE.SERVER_ALERT.BTN');
-                  this.presentAlert(title2, subtitle2, btn2);
-              }
-          }*/
+      } else {
+        this._accessService.verifyApiConnection().subscribe((result) => { }, (err) => {
+          if (err.status === 0) {
+            let title2 = 'Error de servicio!';
+            let subtitle2 = 'En este momento el servicio de Ormigga no se encuentra disponible. por favor intenta de nuevo.'
+            let btn2 = 'Reintentar'
+            this.presentAlert(title2, subtitle2, btn2);
+          }
+        });
+      }
     }
   }
 

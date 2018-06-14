@@ -10,7 +10,7 @@ const accessController = require('./controllers/access/access.controller')
 
 api.get('/', (req, res, next) => {
   debug('Ormigga Api Working')
-  res.end('Ormigga Api working')
+  res.send({ isActive: true, msg:'Ormigga Api working' })
 })
 
 api.post('/login', accessController.login)

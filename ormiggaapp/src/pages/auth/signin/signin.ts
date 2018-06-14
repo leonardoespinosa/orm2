@@ -15,7 +15,6 @@ import { ContractorTabsPage } from '../../contractor/tabs/contractor-tabs';
 export class SigninPage implements OnInit {
 
     private _signinForm: FormGroup;
-    private _error: string;
     private disconnectSubscription: Subscription;
 
     /**
@@ -53,15 +52,13 @@ export class SigninPage implements OnInit {
      */
     ngOnInit() {
         let _currentUser: CurrentUser = this._accessService.getCurrentUser();
-        /*if (_currentUser) {
+        if (_currentUser) {
             this._navCtrl.setRoot(ContractorTabsPage);
-        }*/
+        }
         this._signinForm = new FormGroup({
             email: new FormControl('', [Validators.required, Validators.minLength(6)]),
             password: new FormControl('', [Validators.required, Validators.minLength(4)])
         });
-
-        this._error = '';
     }
 
     /**
@@ -72,7 +69,7 @@ export class SigninPage implements OnInit {
         let loading = this._loadingCtrl.create({ content: loading_msg });
         loading.present();
         setTimeout(() => {
-            let _userData: UserData = { username: this.transformToLower(this._signinForm.value.email), password: this._signinForm.value.password, platform: 'WEBApp' };
+            let _userData: UserData = { username: this.transformToLower(this._signinForm.value.email), password: this._signinForm.value.password, platform: 'App' };
             let _trapSend: User = {
                 from: 'signin',
                 data: _userData,
@@ -83,39 +80,33 @@ export class SigninPage implements OnInit {
             let _trapSendCode = { code: btoa(JSON.stringify(_trapSend)) };
             this._accessService.login(_trapSendCode).subscribe((result) => {
                 if (result.status == -1) {
-                    let title = '¡Oops! Tu cuenta esta bloqueada';
-                    let subtitle = 'Debes estar al día en tus pagos para poder volver a ingresar en el Ormiggero';
-                    let btn = 'Aceptar';
-                    this.presentAlert(title, subtitle, btn);
+                    this.showMessage('¡Oops! Tu cuenta esta bloqueada',
+                        'Debes estar al día en tus pagos para poder volver a ingresar en el Ormiggero',
+                        'Aceptar');
                 } else if (result.status == -2) {
-                    let title = '¡Oops! Algo salió mal';
-                    let subtitle = 'El usuario o la contraseña no es válida, intenta nuevamente...';
-                    let btn = 'Aceptar';
-                    this.presentAlert(title, subtitle, btn);
+                    this.showMessage('¡Oops! Algo salió mal',
+                        'El usuario o la contraseña no es válida, intenta nuevamente...',
+                        'Aceptar');
                 } else if (result.status == -3) {
-                    let title = 'Aishh…';
-                    let subtitle = 'Vemos que no puedes entrar porque tu cuenta está en estos momentos suspendida. Si tienes dudas, comunícate a hola@ormigga.com';
-                    let btn = 'Aceptar';
-                    this.presentAlert(title, subtitle, btn);
+                    this.showMessage('Aishh…',
+                        'Vemos que no puedes entrar porque tu cuenta está en estos momentos suspendida. Si tienes dudas, comunícate a hola@ormigga.com',
+                        'Aceptar');
                 } else if (result.status == -4) {
-                    let title = '¡Oops! Se esta presentando un problema';
-                    let subtitle = 'Por favor contacta con el administrador';
-                    let btn = 'Aceptar';
-                    this.presentAlert(title, subtitle, btn);
-                }else if (result.status == 0) {
-                    let title = '¡Oops! Aún no has activado tu cuenta';
-                    let subtitle = 'Ingresa a tu correo para hacerlo, o solicita nuevamente el correo de activación';
-                    let btn = 'Aceptar';
-                    this.presentAlert(title, subtitle, btn);
+                    this.showMessage('¡Oops! Se esta presentando un problema',
+                        'Por favor contacta con el administrador',
+                        'Aceptar');
+                } else if (result.status == 0) {
+                    this.showMessage('¡Oops! Aún no has activado tu cuenta',
+                        'Ingresa a tu correo para hacerlo, o solicita nuevamente el correo de activación',
+                        'Aceptar');
                 } else if (result.status == 1) {
                     this._accessService.setCurrentUser(result);
                     this._navCtrl.setRoot(ContractorTabsPage);
                 }
             }, (err) => {
-                let title = '¡Oops! Se esta presentando un problema';
-                let subtitle = 'Por favor contacta con el administrador';
-                let btn = 'Aceptar';
-                this.presentAlert(title, subtitle, btn);
+                this.showMessage('¡Oops! Se esta presentando un problema',
+                    'Por favor contacta con el administrador',
+                    'Aceptar');
             });
             loading.dismiss();
         }, 1500);
@@ -130,6 +121,19 @@ export class SigninPage implements OnInit {
 
     sendEmailPrompt() {
 
+    }
+
+    /**
+     * Function to show message
+     * @param {string} _title 
+     * @param {string} _subtitle 
+     * @param {string} _btn 
+     */
+    showMessage(_title: string, _subtitle: string, _btn: string): void {
+        let title = _title;
+        let subtitle = _subtitle;
+        let btn = _btn;
+        this.presentAlert(title, subtitle, btn);
     }
 
     /** 
@@ -153,18 +157,20 @@ export class SigninPage implements OnInit {
             let conntype = this._network.type;
             let validateConn = conntype && conntype !== 'unknown' && conntype !== 'none';
             if (!validateConn) {
-                let title = 'Error de red';
+                let title = 'Error de red!';
                 let subtitle = 'Por favor revisa tu conexión a internet e intenta de nuevo';
                 let btn = 'Reintentar';
                 this.presentAlert(title, subtitle, btn);
-            } /*else {
-                if (!Meteor.status().connected) {
-                    let title2 = this.itemNameTraduction('MOBILE.SERVER_ALERT.TITLE');
-                    let subtitle2 = this.itemNameTraduction('MOBILE.SERVER_ALERT.SUBTITLE');
-                    let btn2 = this.itemNameTraduction('MOBILE.SERVER_ALERT.BTN');
-                    this.presentAlert(title2, subtitle2, btn2);
-                }
-            }*/
+            } else {
+                this._accessService.verifyApiConnection().subscribe((result) => { }, (err) => {
+                    if (err.status === 0) {
+                        let title2 = 'Error de servicio!';
+                        let subtitle2 = 'En este momento el servicio de Ormigga no se encuentra disponible. por favor intenta de nuevo.'
+                        let btn2 = 'Reintentar'
+                        this.presentAlert(title2, subtitle2, btn2);
+                    }
+                });
+            }
         }
     }
 
