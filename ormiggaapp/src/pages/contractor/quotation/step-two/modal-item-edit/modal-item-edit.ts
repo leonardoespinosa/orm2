@@ -3,11 +3,12 @@ import { ViewController, NavParams, ToastController } from 'ionic-angular';
 import { Item } from '../../../../../models/quotation/item.model';
 
 @Component({
-    selector: 'modal-item',
-    templateUrl: 'modal-item.html'
+    selector: 'modal-item-edit',
+    templateUrl: 'modal-item-edit.html'
 })
-export class ModalItem {
+export class ModalItemEdit {
 
+    private _index: number;
     private _item: Item;
 
     /**
@@ -19,7 +20,8 @@ export class ModalItem {
     constructor(public viewCtrl: ViewController,
         public _params: NavParams,
         public _toastCtrl: ToastController) {
-        this._item = this._params.get('item');
+        this._index = this._params.get('index');
+        this._item = this._params.get('itemEdit');
     }
 
     /**
@@ -30,9 +32,9 @@ export class ModalItem {
     }
 
     /**
-     * Function to close modal with item information
+     * Function to close modal with item edited
      */
-    closeWithNewItem(): void {
+    closeWithItemEdit(): void {
         if (this._item.description === '') {
             this.presentToast('Por favor ingresa la descripción del item');
         } else if (this._item.quantity <= 0 || this._item.quantity === null) {
@@ -40,8 +42,15 @@ export class ModalItem {
         } else if (this._item.valSuggest && this._item.valSuggest <= 0) {
             this.presentToast('Por favor verifica el presupuesto');
         } else {
-            this.viewCtrl.dismiss(this._item);
+            this.viewCtrl.dismiss({ remove: false, index: this._index, item: this._item });
         }
+    }
+
+    /**
+     * Function to close modal with item removed
+     */
+    removeItem(): void {
+        this.viewCtrl.dismiss({ remove: true, index: this._index, item: this._item });
     }
 
     /**

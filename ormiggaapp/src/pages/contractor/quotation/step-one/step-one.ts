@@ -112,7 +112,7 @@ export class StepOnePage implements OnInit {
      */
     goToStepTwo(): void {
         if (this._nameRequest === '') {
-            this.presentToast('Ingresa el Nombre del Producto/Servicio')
+            this.presentToast('Ingresa el Nombre del Producto/Servicio');
         } else {
             if (this._description === '' && this._audioList.length === 0) {
                 this.presentToast('Ingresa una descripción o graba un audio');

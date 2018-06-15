@@ -14,9 +14,9 @@
         <img class="img" src="assets/imgs/icono-card.png">
         <p>Aun no has agregado items</p>
     </div>
-    <ion-card *ngFor="let item of _items; let i = index">
+    <ion-card *ngFor="let item of _items; let i = index" (click)="EditItem(i, item)">
         <ion-card-content>
-            <ion-icon name="trash" style="float: right;color: red" (click)="deleteItem(i)"></ion-icon>
+            <!--ion-icon name="trash" style="float: right;color: red"></ion-icon-->
             <p class="item-description">{{item.description}}</p>
         </ion-card-content>
         <ion-row>

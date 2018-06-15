@@ -1,18 +1,22 @@
-import { Component } from '@angular/core';
-import { NavController, ModalController, AlertController, Platform } from 'ionic-angular';
+import { Component, OnInit } from '@angular/core';
+import { NavController, ModalController, AlertController, Platform, ToastController } from 'ionic-angular';
 import { Subscription } from 'rxjs';
 import { Network } from '@ionic-native/network';
 import { ModalItem } from './modal-item/modal-item';
+import { ModalItemEdit } from './modal-item-edit/modal-item-edit';
 import { Item } from '../../../../models/quotation/item.model';
+import { Quotation } from '../../../../models/quotation/quotation.model';
 import { AccessServiceProvider } from '../../../../providers/access-service';
+import { QuotationServiceProvider } from '../../../../providers/quotation-service';
 import { StepThreePage } from '../step-three/step-three';
 
 @Component({
     selector: 'page-step-two',
     templateUrl: 'step-two.html'
 })
-export class StepTwoPage {
+export class StepTwoPage implements OnInit {
 
+    private _newQuotation: Quotation;
     private _items: Item[] = [];
     private disconnectSubscription: Subscription;
 
@@ -24,13 +28,17 @@ export class StepTwoPage {
      * @param {Platform} _platform
      * @param {Network} _network
      * @param {AccessServiceProvider} _accessService
+     * @param {QuotationServiceProvider} _quotationService
+     * @param {ToastController} _toastCtrl
      */
     constructor(public _navCtrl: NavController,
         public _modalCtrl: ModalController,
         public _alertCtrl: AlertController,
         public _platform: Platform,
         private _network: Network,
-        private _accessService: AccessServiceProvider) {
+        private _accessService: AccessServiceProvider,
+        private _quotationService: QuotationServiceProvider,
+        public _toastCtrl: ToastController) {
     }
 
     /**
@@ -38,6 +46,23 @@ export class StepTwoPage {
      */
     ionViewWillLeave() {
         this.disconnectSubscription.unsubscribe();
+    }
+
+    /**
+     * ngOnInit Implementation
+     */
+    ngOnInit() {
+        let _quotation: Quotation = this._quotationService.getQuotation();
+        if (_quotation) {
+            this._newQuotation = _quotation;
+            if (_quotation.dataItems) {
+                this._items = _quotation.dataItems;
+            } else {
+                this._items = [];
+            }
+        } else {
+            this._items = [];
+        }
     }
 
     /**
@@ -51,7 +76,13 @@ export class StepTwoPage {
      * Function to continue in step three
      */
     goToStepThree(): void {
-        this._navCtrl.push(StepThreePage);
+        if (this._items.length === 0) {
+            this.presentToast('Ingresa items para poder avanzar');
+        } else {
+            this._newQuotation.dataItems = this._items;
+            this._quotationService.setQuotation(this._newQuotation);
+            this._navCtrl.push(StepThreePage);
+        }
     }
 
     /**
@@ -63,6 +94,26 @@ export class StepTwoPage {
         modal.onDidDismiss(data => {
             if (typeof data != "undefined" || data != null) {
                 this._items.push(data);
+            }
+        });
+        modal.present();
+    }
+
+    /**
+     * Function to edit item
+     * @param {number} _pIndex 
+     * @param {Item} _pItem 
+     */
+    EditItem(_pIndex: number, _pItem: Item): void {
+        let modal = this._modalCtrl.create(ModalItemEdit, { index: _pIndex, itemEdit: _pItem });
+        modal.onDidDismiss(data => {
+            if (typeof data != "undefined" || data != null) {
+                if (data.remove) {
+                    this.deleteItem(data.index);
+                } else {
+                    this.deleteItem(data.index);
+                    this._items.splice(data.index, 0, data.item);
+                }
             }
         });
         modal.present();
@@ -132,5 +183,18 @@ export class StepTwoPage {
             ]
         });
         alert.present();
+    }
+
+    /**
+     * Function to show toast
+     * @param {string} _pMessage 
+     */
+    presentToast(_pMessage: string) {
+        const toast = this._toastCtrl.create({
+            message: _pMessage,
+            duration: 3000,
+            position: 'middle'
+        });
+        toast.present();
     }
 }
