@@ -74,6 +74,9 @@ export class StepTwoPage implements OnInit {
 
     /**
      * Function to continue in step three
+     * The reason why the quotation is sent by the localstorage (and not navparams) is for 
+     * the requirement: "In case the user leaves or closes the app without completing the 
+     * quotation, the data must be reloaded to the point where it was going"
      */
     goToStepThree(): void {
         if (this._items.length === 0) {
@@ -94,6 +97,8 @@ export class StepTwoPage implements OnInit {
         modal.onDidDismiss(data => {
             if (typeof data != "undefined" || data != null) {
                 this._items.push(data);
+                this._newQuotation.dataItems = this._items;
+                this._quotationService.setQuotation(this._newQuotation);
             }
         });
         modal.present();
@@ -110,9 +115,13 @@ export class StepTwoPage implements OnInit {
             if (typeof data != "undefined" || data != null) {
                 if (data.remove) {
                     this.deleteItem(data.index);
+                    this._newQuotation.dataItems = this._items;
+                    this._quotationService.setQuotation(this._newQuotation);
                 } else {
                     this.deleteItem(data.index);
                     this._items.splice(data.index, 0, data.item);
+                    this._newQuotation.dataItems = this._items;
+                    this._quotationService.setQuotation(this._newQuotation);
                 }
             }
         });
