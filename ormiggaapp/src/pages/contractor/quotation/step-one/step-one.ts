@@ -1,10 +1,13 @@
 import { Component, OnInit } from '@angular/core';
-import { NavController, Platform, AlertController } from 'ionic-angular';
+import { NavController, Platform, AlertController, ToastController } from 'ionic-angular';
 import { Media, MediaObject } from '@ionic-native/media';
 import { File } from '@ionic-native/file';
 import { Network } from '@ionic-native/network';
 import { Subscription } from 'rxjs';
+import { Quotation } from '../../../../models/quotation/quotation.model';
 import { AccessServiceProvider } from '../../../../providers/access-service';
+import { QuotationServiceProvider } from '../../../../providers/quotation-service';
+import { CurrentUser } from '../../../../models/access/access.model';
 import { StepTwoPage } from '../step-two/step-two';
 
 @Component({
@@ -13,13 +16,17 @@ import { StepTwoPage } from '../step-two/step-two';
 })
 export class StepOnePage implements OnInit {
 
+    private _newQuotation: Quotation;
+    private _nameRequest: string;
+    private _description: string;
+    private disconnectSubscription: Subscription;
+
+    private _recordIndex: number;
     private _recording: boolean = false;
     private _filePath: string;
     private _fileName: string;
     private _audio: MediaObject;
     private _audioList: any[] = [];
-    private _recordIndex: number;
-    private disconnectSubscription: Subscription;
 
     /**
      * StepOnePage Constructor
@@ -30,6 +37,8 @@ export class StepOnePage implements OnInit {
      * @param {Network} _network
      * @param {AlertController} _alertCtrl
      * @param {AccessServiceProvider} _accessService
+     * @param {QuotationServiceProvider} _quotation
+     * @param {ToastController} _toastCtrl
      */
     constructor(public _navCtrl: NavController,
         private _media: Media,
@@ -37,7 +46,9 @@ export class StepOnePage implements OnInit {
         public _platform: Platform,
         private _network: Network,
         public _alertCtrl: AlertController,
-        private _accessService: AccessServiceProvider) {
+        private _accessService: AccessServiceProvider,
+        private _quotationService: QuotationServiceProvider,
+        public _toastCtrl: ToastController) {
 
     }
 
@@ -52,6 +63,28 @@ export class StepOnePage implements OnInit {
      * ngOnInit Implementation
      */
     ngOnInit() {
+        let _currentUser: CurrentUser = this._accessService.getCurrentUser();
+        let _quotation: Quotation = this._quotationService.getQuotation();
+        if (_quotation) {
+            this._newQuotation = _quotation;
+            this._nameRequest = _quotation.nameRequest;
+            this._description = _quotation.questions["Descripción del requerimiento"]
+        } else {
+            this._newQuotation = {
+                client: _currentUser.name,
+                username: _currentUser.username,
+                tokenContratante: _currentUser.token_user,
+                name: _currentUser.name,
+                countProffers: 0,
+                habilities: [],
+                haveDateContrato: true,
+                maxPropuestas: 50,
+                nacional: false,
+                sendForm: "save"
+            }
+            this._nameRequest = '';
+            this._description = '';
+        }
         this._recordIndex = 0;
     }
 
@@ -63,10 +96,24 @@ export class StepOnePage implements OnInit {
     }
 
     /**
-     * Function to continue in step two
+     * Function to continue in step two.
+     * The reason why the quotation is sent by the localstorage (and not navparams) is for 
+     * the requirement: "In case the user leaves or closes the app without completing the 
+     * quotation, the data must be reloaded to the point where it was going"
      */
     goToStepTwo(): void {
-        this._navCtrl.push(StepTwoPage);
+        if (this._nameRequest === '') {
+            this.presentToast('Ingresa el Nombre del Producto/Servicio')
+        } else {
+            if (this._description === '' || this._audioList.length === 0) {
+                this.presentToast('Ingresa una descripción o graba un audio');
+            } else {
+                this._newQuotation.nameRequest = this._nameRequest;
+                this._newQuotation.questions["Descripción del requerimiento"] = this._description;
+                this._quotationService.setQuotation(this._newQuotation);
+                this._navCtrl.push(StepTwoPage);
+            }
+        }
     }
 
     /**
@@ -75,11 +122,11 @@ export class StepOnePage implements OnInit {
     startRecord(): void {
         this._recordIndex = this._recordIndex + 1;
         if (this._platform.is('ios')) {
-            this._fileName = 'Solicitud_#' + this._recordIndex.toString() + '_' + new Date().getDate() + '-' + (new Date().getMonth() + 1) + '-' + new Date().getFullYear() + '.m4a';
+            this._fileName = 'Solicitud_#' + this._recordIndex.toString() + '_' + new Date().getDate() + '-' + (new Date().getMonth() + 1) + '-' + new Date().getFullYear() + '.mp3';
             this._filePath = this._file.documentsDirectory.replace(/file:\/\//g, '') + this._fileName;
             this._audio = this._media.create(this._filePath);
         } else if (this._platform.is('android')) {
-            this._fileName = 'Solicitud_#' + this._recordIndex.toString() + '_' + new Date().getDate() + '-' + (new Date().getMonth() + 1) + '-' + new Date().getFullYear() + '.3gp';
+            this._fileName = 'Solicitud_#' + this._recordIndex.toString() + '_' + new Date().getDate() + '-' + (new Date().getMonth() + 1) + '-' + new Date().getFullYear() + '.mp3';
             this._filePath = this._file.externalDataDirectory.replace(/file:\/\//g, '') + this._fileName;
             this._audio = this._media.create(this._filePath);
         }
@@ -151,6 +198,19 @@ export class StepOnePage implements OnInit {
                 });
             }
         }
+    }
+
+    /**
+     * Function to show toast
+     * @param {string} _pMessage 
+     */
+    presentToast(_pMessage: string) {
+        const toast = this._toastCtrl.create({
+            message: _pMessage,
+            duration: 3000,
+            position: 'middle'
+        });
+        toast.present();
     }
 
     /**

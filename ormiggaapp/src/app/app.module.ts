@@ -10,6 +10,7 @@ import { DragulaModule } from 'ng2-dragula/ng2-dragula';
 import { MyApp } from './app.component';
 import { PAGES_DECLARATIONS } from './index';
 import { AccessServiceProvider } from '../providers/access-service';
+import { QuotationServiceProvider } from '../providers/quotation-service';
 
 import { Device } from '@ionic-native/device';
 import { Media } from '@ionic-native/media';
@@ -52,6 +53,7 @@ import { Camera } from '@ionic-native/camera';
     Network,
     { provide: ErrorHandler, useClass: IonicErrorHandler },
     AccessServiceProvider,
+    QuotationServiceProvider,
     Media,
     File,
     FileTransfer,

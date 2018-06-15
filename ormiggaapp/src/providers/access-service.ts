@@ -15,7 +15,7 @@ export class AccessServiceProvider {
         'Accept': 'application/json',
         'Authorization': `Bearer ${this.getToken()}`
     });
-    private apiUrl = 'http://192.168.0.5:3001';
+    private apiUrl = 'http://192.168.0.4:3001';
     //private apiUrl = 'http://192.168.0.31:3001';
     //private apiUrl = 'http://35.231.100.202:3001';
 
