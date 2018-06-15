@@ -15,13 +15,14 @@ export class AccessServiceProvider {
         'Accept': 'application/json',
         'Authorization': `Bearer ${this.getToken()}`
     });
-    private apiUrl = 'http://192.168.0.4:3001';
-    //private apiUrl = 'http://192.168.0.31:3001';
+    //private apiUrl = 'http://192.168.0.4:3001';
+    private apiUrl = 'http://192.168.0.62:3001';
     //private apiUrl = 'http://35.231.100.202:3001';
 
     /**
      * AccessService Constructor
      * @param {HttpClient} http 
+     * @param {App} _app
      */
     constructor(private http: HttpClient, private _app: App) { }
 
@@ -86,7 +87,7 @@ export class AccessServiceProvider {
         }
 
         let currentUser: CurrentUser = {
-            name: name,
+            name: _userRsp.data.usr.name,
             uuid: _userRsp.data.usr.token,
             platform: _userRsp.data.platform,
             username: _userRsp.data.usr.username,

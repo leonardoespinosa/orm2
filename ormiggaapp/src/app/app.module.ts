@@ -6,6 +6,7 @@ import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { Network } from '@ionic-native/network';
 import { DragulaModule } from 'ng2-dragula/ng2-dragula';
+import { LongPressModule } from 'ionic-long-press';
 
 import { MyApp } from './app.component';
 import { PAGES_DECLARATIONS } from './index';
@@ -39,7 +40,8 @@ import { Camera } from '@ionic-native/camera';
       }
     }),
     HttpClientModule,
-    DragulaModule
+    DragulaModule,
+    //LongPressModule
   ],
   bootstrap: [IonicApp],
   entryComponents: [

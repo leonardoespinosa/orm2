@@ -68,7 +68,11 @@ export class StepOnePage implements OnInit {
         if (_quotation) {
             this._newQuotation = _quotation;
             this._nameRequest = _quotation.nameRequest;
-            this._description = _quotation.questions["Descripción del requerimiento"]
+            if (_quotation.questions) {
+                this._description = _quotation.questions["Descripción del requerimiento"]
+            } else {
+                this._description = '';
+            }
         } else {
             this._newQuotation = {
                 client: _currentUser.name,
@@ -80,7 +84,12 @@ export class StepOnePage implements OnInit {
                 haveDateContrato: true,
                 maxPropuestas: 50,
                 nacional: false,
-                sendForm: "save"
+                sendForm: "save",
+                nameRequest: '',
+                questions: {
+                    "Descripción del requerimiento": '',
+                    "propous": ''
+                }
             }
             this._nameRequest = '';
             this._description = '';
@@ -105,7 +114,7 @@ export class StepOnePage implements OnInit {
         if (this._nameRequest === '') {
             this.presentToast('Ingresa el Nombre del Producto/Servicio')
         } else {
-            if (this._description === '' || this._audioList.length === 0) {
+            if (this._description === '' && this._audioList.length === 0) {
                 this.presentToast('Ingresa una descripción o graba un audio');
             } else {
                 this._newQuotation.nameRequest = this._nameRequest;
