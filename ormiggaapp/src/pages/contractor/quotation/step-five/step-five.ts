@@ -113,7 +113,6 @@ export class StepFivePage implements OnInit {
     goToStepSix(): void {
         this._newQuotation.urgentDateEntrega = this._dateMax;
         this._quotationService.setQuotation(this._newQuotation);
-        let q: Quotation = this._quotationService.getQuotation();
         this._navCtrl.push(StepSixPage);
     }
 

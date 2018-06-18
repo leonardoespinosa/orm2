@@ -30,18 +30,19 @@ export interface Quotation {
     tokenSolicitud?: string;
     urgentDateEntrega?: string;
     username?: string;
+    notFlexPayForm?: boolean;
 }
 
 /**
  * Payment Model
  */
 export interface Payment {
-    "En 30 días": number;
-    "En 60 días": number;
-    "En 90 días": number;
-    "anticipo": number;
-    "pagoentrega": number;
-    "mediopago": string;
+    "En 30 días"?: number;
+    "En 60 días"?: number;
+    "En 90 días"?: number;
+    "anticipo"?: number;
+    "pagoentrega"?: number;
+    "mediopago"?: string;
 }
 
 /**

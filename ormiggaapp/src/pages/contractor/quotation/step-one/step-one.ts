@@ -89,6 +89,15 @@ export class StepOnePage implements OnInit {
                 questions: {
                     "Descripción del requerimiento": '',
                     "propous": ''
+                },
+                notFlexPayForm: false,
+                pago: {
+                    mediopago: 'Consignación a Ormigga',
+                    anticipo: 20,
+                    pagoentrega: 80,
+                    "En 30 días": 0,
+                    "En 60 días": 0,
+                    "En 90 días": 0
                 }
             }
             this._nameRequest = '';

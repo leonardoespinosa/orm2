@@ -1,21 +1,24 @@
-import { Component } from '@angular/core';
-import { NavController, AlertController, Platform } from 'ionic-angular';
+import { Component, OnInit } from '@angular/core';
+import { NavController, AlertController, Platform, ToastController } from 'ionic-angular';
 import { Network } from '@ionic-native/network';
 import { Subscription } from 'rxjs';
 import { StepSevenPage } from '../step-seven/step-seven';
 import { AccessServiceProvider } from '../../../../providers/access-service';
-
+import { QuotationServiceProvider } from '../../../../providers/quotation-service';
+import { Quotation } from '../../../../models/quotation/quotation.model';
 @Component({
     selector: 'page-step-six',
     templateUrl: 'step-six.html'
 })
-export class StepSixPage {
+export class StepSixPage implements OnInit {
 
+    private _newQuotation: Quotation;
     private _advance: number;
     private _upon_delivery: number;
     private _30_days: number;
     private _60_days: number;
     private _90_days: number;
+    private _acceptOtherOffer: boolean = false;
     private disconnectSubscription: Subscription;
 
     /**
@@ -25,12 +28,16 @@ export class StepSixPage {
      * @param {Platform} _platform 
      * @param {Network} _network 
      * @param {AccessServiceProvider} _accessService
+     * @param {QuotationServiceProvider} _quotationService
+     * @param {ToastController} _toastCtrl
      */
     constructor(public _navCtrl: NavController,
         public _alertCtrl: AlertController,
         public _platform: Platform,
         private _network: Network,
-        private _accessService: AccessServiceProvider) {
+        private _accessService: AccessServiceProvider,
+        private _quotationService: QuotationServiceProvider,
+        public _toastCtrl: ToastController) {
         this._advance = 20;
         this._upon_delivery = 80;
         this._30_days = 0;
@@ -46,6 +53,43 @@ export class StepSixPage {
     }
 
     /**
+     * ngOnInit Implementation
+     */
+    ngOnInit() {
+        let _quotation: Quotation = this._quotationService.getQuotation();
+        if (_quotation) {
+            this._newQuotation = _quotation;
+            if (_quotation.pago) {
+                if (_quotation.pago.anticipo) {
+                    this._advance = _quotation.pago.anticipo;
+                }
+                if (_quotation.pago.pagoentrega) {
+                    this._upon_delivery = _quotation.pago.pagoentrega;
+                }
+                if (_quotation.pago["En 30 días"]) {
+                    this._30_days = _quotation.pago["En 30 días"];
+                }
+                if (_quotation.pago["En 60 días"]) {
+                    this._60_days = _quotation.pago["En 60 días"];
+                }
+                if (_quotation.pago["En 90 días"]) {
+                    this._90_days = _quotation.pago["En 90 días"];
+                }
+            }
+            if (_quotation.notFlexPayForm) {
+                this._acceptOtherOffer = _quotation.notFlexPayForm;
+            }
+        } else {
+            this._advance = 20;
+            this._upon_delivery = 80;
+            this._30_days = 0;
+            this._60_days = 0;
+            this._90_days = 0;
+            this._acceptOtherOffer = false;
+        }
+    }
+
+    /**
      * Function to go back in step five
      */
     goToStepFive(): void {
@@ -54,9 +98,25 @@ export class StepSixPage {
 
     /**
      * Function to continue in step seven
+     * The reason why the quotation is sent by the localstorage (and not navparams) is for 
+     * the requirement: "In case the user leaves or closes the app without completing the 
+     * quotation, the data must be reloaded to the point where it was going"
      */
     goToStepSeven(): void {
-        this._navCtrl.push(StepSevenPage);
+        let sum: number = Number.parseInt(this._advance.toString()) + Number.parseInt(this._upon_delivery.toString()) + Number.parseInt(this._30_days.toString()) + Number.parseInt(this._60_days.toString()) + Number.parseInt(this._90_days.toString());
+
+        if (sum !== 100) {
+            this.presentToast('La forma de pago debe sumar el 100%');
+        } else {
+            this._newQuotation.pago.anticipo = this._advance;
+            this._newQuotation.pago.pagoentrega = this._upon_delivery;
+            this._newQuotation.pago["En 30 días"] = this._30_days;
+            this._newQuotation.pago["En 60 días"] = this._60_days;
+            this._newQuotation.pago["En 90 días"] = this._90_days;
+            this._newQuotation.notFlexPayForm = this._acceptOtherOffer;
+            this._quotationService.setQuotation(this._newQuotation);
+            this._navCtrl.push(StepSevenPage);
+        }
     }
 
     /** 
@@ -115,5 +175,18 @@ export class StepSixPage {
             ]
         });
         alert.present();
+    }
+
+    /**
+     * Function to show toast
+     * @param {string} _pMessage 
+     */
+    presentToast(_pMessage: string) {
+        const toast = this._toastCtrl.create({
+            message: _pMessage,
+            duration: 2000,
+            position: 'middle'
+        });
+        toast.present();
     }
 }

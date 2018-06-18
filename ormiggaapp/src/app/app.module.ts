@@ -41,7 +41,7 @@ import { Camera } from '@ionic-native/camera';
     }),
     HttpClientModule,
     DragulaModule,
-    //LongPressModule
+    LongPressModule
   ],
   bootstrap: [IonicApp],
   entryComponents: [
