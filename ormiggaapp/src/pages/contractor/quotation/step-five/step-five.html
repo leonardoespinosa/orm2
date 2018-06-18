@@ -8,7 +8,7 @@
     <div style="text-align: center;margin-top: 5rem;">
         <i style="font-size: 10em;color: #08ad9f;" class="fa fa-handshake-o" aria-hidden="true"></i>
     </div>
-    <ion-datetime class="current-day" displayFormat="DD/MMM/YYYY HH:mm" [(ngModel)]="_today"></ion-datetime>
+    <ion-datetime class="current-day" displayFormat="DD/MMM/YYYY HH:mm" min="{{_minDate}}" [(ngModel)]="_dateMax"></ion-datetime>
 </ion-content>
 <ion-footer padding class="buttons">
     <div align="center">

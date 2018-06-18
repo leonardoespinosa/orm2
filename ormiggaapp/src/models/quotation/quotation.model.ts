@@ -28,7 +28,7 @@ export interface Quotation {
     timestart?: string;
     tokenContratante?: string;
     tokenSolicitud?: string;
-    urgentDateEntrega?: Date;
+    urgentDateEntrega?: string;
     username?: string;
 }
 

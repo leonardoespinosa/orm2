@@ -1,17 +1,21 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { NavController, AlertController, Platform } from 'ionic-angular';
 import { Network } from '@ionic-native/network';
 import { Subscription } from 'rxjs';
 import { AccessServiceProvider } from '../../../../providers/access-service';
+import { QuotationServiceProvider } from '../../../../providers/quotation-service';
+import { Quotation } from '../../../../models/quotation/quotation.model';
 import { StepSixPage } from '../step-six/step-six';
 
 @Component({
     selector: 'page-step-five',
     templateUrl: 'step-five.html'
 })
-export class StepFivePage {
+export class StepFivePage implements OnInit {
 
-    private _today: string;
+    private _newQuotation: Quotation;
+    private _dateMax: string;
+    private _minDate: string;
     private disconnectSubscription: Subscription;
 
     /**
@@ -21,13 +25,14 @@ export class StepFivePage {
      * @param {Platform} _platform 
      * @param {Network} _network 
      * @param {AccessServiceProvider} _accessService
+     * @param {QuotationServiceProvider} _quotationService
      */
     constructor(public _navCtrl: NavController,
         public _alertCtrl: AlertController,
         public _platform: Platform,
         private _network: Network,
-        private _accessService: AccessServiceProvider) {
-        this._today = new Date().toISOString();
+        private _accessService: AccessServiceProvider,
+        private _quotationService: QuotationServiceProvider) {
     }
 
     /**
@@ -35,6 +40,61 @@ export class StepFivePage {
      */
     ionViewWillLeave() {
         this.disconnectSubscription.unsubscribe();
+    }
+
+    /**
+     * ngOnInit
+     */
+    ngOnInit() {
+        let _quotation: Quotation = this._quotationService.getQuotation();
+        if (_quotation) {
+            this._newQuotation = _quotation;
+            if (_quotation.dateFinish && _quotation.urgentDateEntrega) {
+                this._minDate = _quotation.dateFinish;
+                this._dateMax = _quotation.urgentDateEntrega;
+            } else if (_quotation.dateFinish && !_quotation.urgentDateEntrega) {
+                this._minDate = _quotation.dateFinish;
+                let _estimatedDateMax: Date = new Date(_quotation.dateFinish);
+                _estimatedDateMax.setDate(_estimatedDateMax.getDate() + 3);
+                this._dateMax = _estimatedDateMax.toISOString();
+            } else {
+                this._minDate = this.getMinDate();
+                let _todayDate = new Date();
+                _todayDate.setDate(_todayDate.getDate() + 3);
+                this._dateMax = _todayDate.toISOString();
+            }
+        } else {
+            this._minDate = this.getMinDate();
+            let _todayDate = new Date();
+            _todayDate.setDate(_todayDate.getDate() + 3);
+            this._dateMax = _todayDate.toISOString();
+        }
+    }
+
+    /**
+     * Function to return min date
+     */
+    getMinDate(): string {
+        let mindate: Date = new Date();
+        let dd: number = mindate.getDate();
+        let mm: number = mindate.getMonth() + 1;
+        let yyyy: number = mindate.getFullYear();
+        let day: string;
+        let month: string;
+
+        if (dd < 10) {
+            day = '0' + dd;
+        } else {
+            day = dd.toString();
+        }
+
+        if (mm < 10) {
+            month = '0' + mm;
+        } else {
+            month = mm.toString();
+        }
+
+        return yyyy + '-' + month + '-' + day;
     }
 
     /**
@@ -46,8 +106,14 @@ export class StepFivePage {
 
     /**
      * Function to continue in step six
+     * The reason why the quotation is sent by the localstorage (and not navparams) is for 
+     * the requirement: "In case the user leaves or closes the app without completing the 
+     * quotation, the data must be reloaded to the point where it was going"
      */
     goToStepSix(): void {
+        this._newQuotation.urgentDateEntrega = this._dateMax;
+        this._quotationService.setQuotation(this._newQuotation);
+        let q: Quotation = this._quotationService.getQuotation();
         this._navCtrl.push(StepSixPage);
     }
 
