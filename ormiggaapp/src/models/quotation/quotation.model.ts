@@ -10,7 +10,7 @@ export interface Quotation {
     countProffers: number;
     createdAtSolicitud?: Date;
     dataItems?: Item[];
-    dateFinish?: Date;
+    dateFinish?: string;
     file?: string;
     habilities: any[];
     haveDateContrato: boolean;

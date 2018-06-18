@@ -216,7 +216,7 @@ export class StepOnePage implements OnInit {
     presentToast(_pMessage: string) {
         const toast = this._toastCtrl.create({
             message: _pMessage,
-            duration: 3000,
+            duration: 2000,
             position: 'middle'
         });
         toast.present();

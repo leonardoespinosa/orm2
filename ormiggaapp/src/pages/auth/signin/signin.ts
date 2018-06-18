@@ -53,7 +53,13 @@ export class SigninPage implements OnInit {
     ngOnInit() {
         let _currentUser: CurrentUser = this._accessService.getCurrentUser();
         if (_currentUser) {
-            this._navCtrl.setRoot(ContractorTabsPage);
+            let loading_msg = 'Un momento por favor...';
+            let loading = this._loadingCtrl.create({ content: loading_msg });
+            loading.present();
+            setTimeout(() => {
+                this._navCtrl.setRoot(ContractorTabsPage);
+                loading.dismiss();
+            }, 1000);
         }
         this._signinForm = new FormGroup({
             email: new FormControl('', [Validators.required, Validators.minLength(6)]),

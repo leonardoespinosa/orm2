@@ -44,6 +44,9 @@ export class StepThreePage {
 
     /**
      * Function to continue in step four
+     * The reason why the quotation is sent by the localstorage (and not navparams) is for 
+     * the requirement: "In case the user leaves or closes the app without completing the 
+     * quotation, the data must be reloaded to the point where it was going"
      */
     goToStepFour(): void {
         this._navCtrl.push(StepFourPage);
