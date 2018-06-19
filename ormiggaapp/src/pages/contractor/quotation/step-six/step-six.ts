@@ -108,11 +108,11 @@ export class StepSixPage implements OnInit {
         if (sum !== 100) {
             this.presentToast('La forma de pago debe sumar el 100%');
         } else {
-            this._newQuotation.pago.anticipo = this._advance;
-            this._newQuotation.pago.pagoentrega = this._upon_delivery;
-            this._newQuotation.pago["En 30 días"] = this._30_days;
-            this._newQuotation.pago["En 60 días"] = this._60_days;
-            this._newQuotation.pago["En 90 días"] = this._90_days;
+            this._newQuotation.pago.anticipo = Number.parseInt(this._advance.toString());
+            this._newQuotation.pago.pagoentrega = Number.parseInt(this._upon_delivery.toString());
+            this._newQuotation.pago["En 30 días"] = Number.parseInt(this._30_days.toString());
+            this._newQuotation.pago["En 60 días"] = Number.parseInt(this._60_days.toString());
+            this._newQuotation.pago["En 90 días"] = Number.parseInt(this._90_days.toString());
             this._newQuotation.notFlexPayForm = this._acceptOtherOffer;
             this._quotationService.setQuotation(this._newQuotation);
             this._navCtrl.push(StepSevenPage);

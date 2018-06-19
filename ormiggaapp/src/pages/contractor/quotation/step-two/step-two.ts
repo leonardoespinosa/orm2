@@ -96,7 +96,12 @@ export class StepTwoPage implements OnInit {
         let modal = this._modalCtrl.create( ModalItem, { item: _item });
         modal.onDidDismiss(data => {
             if (typeof data != "undefined" || data != null) {
-                this._items.push(data);
+                let _itemToInsert: Item = { description: data.description, 
+                                            quantity: Number.parseInt(data.quantity.toString()), 
+                                            createBy: data.createBy, 
+                                            valSuggest: Number.parseInt(data.valSuggest.toString()) 
+                                        };
+                this._items.push(_itemToInsert);
                 this._newQuotation.dataItems = this._items;
                 this._quotationService.setQuotation(this._newQuotation);
             }
@@ -119,7 +124,12 @@ export class StepTwoPage implements OnInit {
                     this._quotationService.setQuotation(this._newQuotation);
                 } else {
                     this.deleteItem(data.index);
-                    this._items.splice(data.index, 0, data.item);
+                    let _itemToInsert: Item = { description: data.item.description, 
+                        quantity: Number.parseInt(data.item.quantity.toString()), 
+                        createBy: data.item.createBy, 
+                        valSuggest: Number.parseInt(data.item.valSuggest.toString()) 
+                    };
+                    this._items.splice(data.index, 0, _itemToInsert);
                     this._newQuotation.dataItems = this._items;
                     this._quotationService.setQuotation(this._newQuotation);
                 }
