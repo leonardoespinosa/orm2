@@ -8,9 +8,9 @@
     <p class="msg">Ordena de arriba a abajo qué importancia tendrá cada criterio al momento de decidir tu compra</p>
     <p></p>
     <div [dragula]='"first-bag"' [dragulaModel]='items'>
-        <ion-card *ngFor="let item of items" id="{{ item.name }}" class="card-info">
+        <ion-card *ngFor="let item of items" id="{{ item.text }}" class="card-info">
             <ion-card-content>
-                {{ item.name }}
+                {{ item.text }}
             </ion-card-content>
         </ion-card>
     </div>

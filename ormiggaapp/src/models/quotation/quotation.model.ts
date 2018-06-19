@@ -49,12 +49,12 @@ export interface Payment {
  * Weight Model
  */
 export interface Weight {
-    calidad: WeightDetail;
-    calificacion: WeightDetail;
-    experiencia: WeightDetail;
-    formapago: WeightDetail;
-    tiempoentrega: WeightDetail;
-    valueProffer: WeightDetail;
+    calidad?: WeightDetail;
+    calificacion?: WeightDetail;
+    experiencia?: WeightDetail;
+    formapago?: WeightDetail;
+    tiempoentrega?: WeightDetail;
+    valueProffer?: WeightDetail;
 }
 
 /**
