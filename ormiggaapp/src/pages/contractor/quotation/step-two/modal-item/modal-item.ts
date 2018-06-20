@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { ViewController, NavParams, ToastController } from 'ionic-angular';
+import { ViewController, NavParams, ToastController, LoadingController } from 'ionic-angular';
 import { Item } from '../../../../../models/quotation/item.model';
 
 @Component({
@@ -15,10 +15,12 @@ export class ModalItem {
      * @param {ViewController} viewCtrl 
      * @param {NavParams} _params 
      * @param {ToastController} _toastCtrl
+     * @param {LoadingController} _loadingCtrl
      */
     constructor(public viewCtrl: ViewController,
         public _params: NavParams,
-        public _toastCtrl: ToastController) {
+        public _toastCtrl: ToastController,
+        public _loadingCtrl: LoadingController) {
         this._item = this._params.get('item');
     }
 
@@ -40,7 +42,13 @@ export class ModalItem {
         } else if (this._item.valSuggest && this._item.valSuggest <= 0) {
             this.presentToast('Por favor verifica el presupuesto');
         } else {
-            this.viewCtrl.dismiss(this._item);
+            let loading_msg = 'Agregando Ítem...';
+            let loading = this._loadingCtrl.create({ content: loading_msg });
+            loading.present();
+            setTimeout(() => {
+                this.viewCtrl.dismiss(this._item);
+                loading.dismiss();
+            }, 1000);
         }
     }
 
