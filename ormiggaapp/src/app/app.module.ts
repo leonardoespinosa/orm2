@@ -18,6 +18,7 @@ import { Media } from '@ionic-native/media';
 import { File } from '@ionic-native/file';
 import { FileTransfer, FileTransferObject } from '@ionic-native/file-transfer';
 import { Camera } from '@ionic-native/camera';
+import { AndroidPermissions } from '@ionic-native/android-permissions';
 
 @NgModule({
   declarations: [
@@ -60,7 +61,8 @@ import { Camera } from '@ionic-native/camera';
     File,
     FileTransfer,
     FileTransferObject,
-    Camera
+    Camera,
+    AndroidPermissions
   ]
 })
 export class AppModule { }

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, NgZone } from '@angular/core';
 import { NavController, Platform, AlertController, ToastController } from 'ionic-angular';
 import { Media, MediaObject } from '@ionic-native/media';
 import { File } from '@ionic-native/file';
@@ -48,7 +48,8 @@ export class StepOnePage implements OnInit {
         public _alertCtrl: AlertController,
         private _accessService: AccessServiceProvider,
         private _quotationService: QuotationServiceProvider,
-        public _toastCtrl: ToastController) {
+        public _toastCtrl: ToastController,
+        private _ngZone: NgZone) {
 
     }
 
@@ -152,15 +153,21 @@ export class StepOnePage implements OnInit {
         this._recording = true;
     }
 
+    RecordAudio(): void { }
+
     /**
      * Function to stop audio record
      */
     stopRecord(): void {
-        this._audio.stopRecord();
-        let data = { filename: this._fileName };
-        this._audioList.push(data);
         this._recording = false;
-        // this.audioBlob = new Blob([this._audio], {type: 'audio/mp3'});
+        this._audio.stopRecord();
+        this._audio.onSuccess.subscribe(() => {
+            this._ngZone.run(() => {
+                this._audio.stop();
+                let data = { filename: this._fileName };
+                this._audioList.push(data);
+            });
+        });
     }
 
     /**

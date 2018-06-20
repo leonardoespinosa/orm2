@@ -4,14 +4,9 @@
     </ion-navbar>
 </ion-header>
 <ion-content padding>
-    <ion-fab right bottom *ngIf="!_recording">
-        <button ion-fab (click)="startRecord()">
+    <ion-fab right bottom>
+        <button ion-fab ion-long-press [interval]="100" (onPressStart)="startRecord()" (onPressing)="RecordAudio()" (onPressEnd)="stopRecord()">
             <ion-icon name="mic"></ion-icon>
-        </button>
-    </ion-fab>
-    <ion-fab right bottom *ngIf="_recording">
-        <button ion-fab (click)="stopRecord()">
-            <ion-icon name="mic-off"></ion-icon>
         </button>
     </ion-fab>
     <h3 class="title-page">¡Indica qué quieres!</h3>
@@ -27,16 +22,16 @@
             <ion-textarea [(ngModel)]="_description" rows="6"></ion-textarea>
         </ion-item>
     </ion-list>
-    <p *ngIf="_recording" style="color: red; text-align: center">Gradando audio...</p>
+    <p *ngIf="_recording" style="color: red; text-align: center">Grabando audio...</p>
     <ion-list>
         <ion-item *ngFor="let audio of _audioList; index as i;">
-            <p>{{audio.filename}}</p>
-            <button ion-button clear item-end (click)="playAudio(audio.filename, i)">
+            <button ion-button clear item-start (click)="playAudio(audio.filename, i)">
                 <ion-icon name="play"></ion-icon>
             </button>
-            <button ion-button clear item-end color="danger">
+            <button ion-button clear item-start color="danger">
                 <ion-icon name="trash"></ion-icon>
             </button>
+            <p>{{audio.filename}}</p>
         </ion-item>
     </ion-list>
 </ion-content>

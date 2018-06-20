@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
 import { App } from 'ionic-angular';
 import { Observable } from 'rxjs';
-import { catchError, map, tap, retry } from 'rxjs/operators';
+import { retry } from 'rxjs/operators';
 import { SigninPage } from '../pages/auth/signin/signin';
 import { CurrentUser } from '../models/access/access.model';
 
@@ -16,7 +16,7 @@ export class AccessServiceProvider {
         'Authorization': `Bearer ${this.getToken()}`
     });
     //private apiUrl = 'http://192.168.0.4:3001';
-    private apiUrl = 'http://192.168.0.62:3001';
+    private apiUrl = 'http://192.168.0.39:3001';
     //private apiUrl = 'http://35.231.100.202:3001';
 
     /**
