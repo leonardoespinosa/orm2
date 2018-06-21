@@ -25,10 +25,10 @@
     <p *ngIf="_recording" style="color: red; text-align: center">Grabando audio...</p>
     <ion-list>
         <ion-item *ngFor="let audio of _audioList; index as i;">
-            <button ion-button clear item-start (click)="playAudio(audio.filename, i)">
+            <button ion-button clear item-start (click)="playAudio(audio.filename)">
                 <ion-icon name="play"></ion-icon>
             </button>
-            <button ion-button clear item-start color="danger">
+            <button ion-button clear item-start color="danger" (click)="removeAudio(audio.filename)">
                 <ion-icon name="trash"></ion-icon>
             </button>
             <p>{{audio.filename}}</p>

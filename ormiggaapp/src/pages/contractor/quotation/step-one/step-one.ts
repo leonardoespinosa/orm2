@@ -1,7 +1,7 @@
 import { Component, OnInit, NgZone } from '@angular/core';
 import { NavController, Platform, AlertController, ToastController } from 'ionic-angular';
 import { Media, MediaObject } from '@ionic-native/media';
-import { File } from '@ionic-native/file';
+import { File, DirectoryEntry, FileEntry } from '@ionic-native/file';
 import { Network } from '@ionic-native/network';
 import { Subscription } from 'rxjs';
 import { Quotation } from '../../../../models/quotation/quotation.model';
@@ -166,6 +166,13 @@ export class StepOnePage implements OnInit {
                 this._audio.stop();
                 let data = { filename: this._fileName };
                 this._audioList.push(data);
+                /*let _path: string = this._file.externalDataDirectory.replace(/file:\/\//g, ''); // Android
+                this._file.resolveDirectoryUrl(_path)
+                    .then((directoryEntry: any) => {
+                        this._file.getFile(directoryEntry, this._fileName, { create: false }).then((fileEntry: FileEntry) => {
+                            console.log(fileEntry);
+                        })
+                    });*/
             });
         });
     }
@@ -175,7 +182,7 @@ export class StepOnePage implements OnInit {
      * @param {number} file 
      * @param {string} idx 
      */
-    playAudio(file: string, idx: number): void {
+    playAudio(file: string): void {
         if (this._platform.is('ios')) {
             this._filePath = this._file.documentsDirectory.replace(/file:\/\//g, '') + file;
             this._audio = this._media.create(this._filePath);
@@ -185,6 +192,15 @@ export class StepOnePage implements OnInit {
         }
         this._audio.play();
         this._audio.setVolume(0.8);
+    }
+
+    /**
+     * Function to remove audio in array
+     * @param {string} _file 
+     */
+    removeAudio(_file: string): void {
+        let data = this._audioList.indexOf(_file);
+        this._audioList.splice(data, 1);
     }
 
     /** 
