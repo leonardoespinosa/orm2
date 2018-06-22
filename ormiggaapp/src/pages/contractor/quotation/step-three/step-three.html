@@ -4,15 +4,18 @@
     </ion-navbar>
 </ion-header>
 <ion-content padding>
-    <ion-fab right bottom>
-        <button ion-fab (click)="AddItem()">
-            <ion-icon name="add"></ion-icon>
-        </button>
-    </ion-fab>
-    <h4 class="title-page">Si tienes un archivo que ilustre mejor lo que quieres, súbelo aquí</h4>
-    <div style="text-align: center;margin-top: 5rem;">
+    <h4 class="title-page">Si tienes un archivo que ilustre mejor lo que quieres, súbelo aquí (Opcional)</h4>
+    <div class="info">
         <i style="font-size: 10em;color: #08ad9f;" class="fa fa-file fa-3x" aria-hidden="true"></i>
-        <p>Se aceptan archivos en formato jpeg, jpg, Tiff. Peso maximo 25 MB</p>
+        <div *ngIf="!_fileURI">
+            <button ion-button outline (click)="getFile()" class="upload-btn">Seleccionar Archivo</button>
+            <p>Se aceptan archivos en formato jpeg, jpg, Tiff.</p>
+        </div>
+        <div *ngIf="_fileURI">
+            <p>Archivo a cargar:</p>
+            <p class="image-uri">{{_fileURI}}</p>
+            <button ion-button outline (click)="removeFile()" color="danger" class="upload-btn">Eliminar Archivo</button>
+        </div>
     </div>
 </ion-content>
 <ion-footer padding class="buttons">

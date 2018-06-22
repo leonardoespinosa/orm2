@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
-import { NavController, AlertController, Platform } from 'ionic-angular';
+import { NavController, AlertController, Platform, ToastController } from 'ionic-angular';
 import { Network } from '@ionic-native/network';
+import { FileTransfer, FileUploadOptions, FileTransferObject } from '@ionic-native/file-transfer';
+import { Camera, CameraOptions } from '@ionic-native/camera';
 import { Subscription } from 'rxjs';
 import { AccessServiceProvider } from '../../../../providers/access-service';
 import { StepFourPage } from '../step-four/step-four';
@@ -10,6 +12,7 @@ import { StepFourPage } from '../step-four/step-four';
 })
 export class StepThreePage {
 
+    private _fileURI: any = null;
     private disconnectSubscription: Subscription;
 
     /**
@@ -19,12 +22,18 @@ export class StepThreePage {
      * @param {Platform} _platform 
      * @param {Network} _network 
      * @param {AccessServiceProvider} _accessService
+     * @param {FileTransfer} _transfer
+     * @param {Camera} _camera
+     * @param {ToastController} _toastCtrl
      */
     constructor(public _navCtrl: NavController,
         public _alertCtrl: AlertController,
         public _platform: Platform,
         private _network: Network,
-        private _accessService: AccessServiceProvider) {
+        private _accessService: AccessServiceProvider,
+        private _transfer: FileTransfer,
+        private _camera: Camera,
+        public _toastCtrl: ToastController) {
 
     }
 
@@ -33,6 +42,31 @@ export class StepThreePage {
      */
     ionViewWillLeave() {
         this.disconnectSubscription.unsubscribe();
+    }
+
+    /**
+     * Function to get image with camera
+     */
+    getFile() {
+        const options: CameraOptions = {
+            quality: 100,
+            destinationType: this._camera.DestinationType.FILE_URI,
+            sourceType: this._camera.PictureSourceType.PHOTOLIBRARY
+        }
+        this._camera.getPicture(options).then((imageData) => {
+            this._fileURI = imageData;
+            console.log(this._fileURI);
+        }, (err) => {
+            console.log(err);
+            this.presentToast(err);
+        });
+    }
+
+    /**
+     * Function to remove URI
+     */
+    removeFile() {
+        this._fileURI = null;
     }
 
     /**
@@ -108,5 +142,18 @@ export class StepThreePage {
             ]
         });
         alert.present();
+    }
+
+    /**
+     * Function to show toast
+     * @param {string} _pMessage 
+     */
+    presentToast(_pMessage: string) {
+        const toast = this._toastCtrl.create({
+            message: _pMessage,
+            duration: 2000,
+            position: 'middle'
+        });
+        toast.present();
     }
 }
