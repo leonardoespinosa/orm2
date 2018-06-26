@@ -1,17 +1,20 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { NavController, AlertController, Platform, ToastController } from 'ionic-angular';
 import { Network } from '@ionic-native/network';
-import { FileTransfer, FileUploadOptions, FileTransferObject } from '@ionic-native/file-transfer';
+import { FileTransfer} from '@ionic-native/file-transfer';
 import { Camera, CameraOptions } from '@ionic-native/camera';
 import { Subscription } from 'rxjs';
+import { Quotation } from '../../../../models/quotation/quotation.model';
+import { QuotationServiceProvider } from '../../../../providers/quotation-service';
 import { AccessServiceProvider } from '../../../../providers/access-service';
 import { StepFourPage } from '../step-four/step-four';
 @Component({
     selector: 'page-step-three',
     templateUrl: 'step-three.html'
 })
-export class StepThreePage {
+export class StepThreePage implements OnInit {
 
+    private _newQuotation: Quotation;
     private _fileURI: any = null;
     private disconnectSubscription: Subscription;
 
@@ -22,18 +25,18 @@ export class StepThreePage {
      * @param {Platform} _platform 
      * @param {Network} _network 
      * @param {AccessServiceProvider} _accessService
-     * @param {FileTransfer} _transfer
      * @param {Camera} _camera
      * @param {ToastController} _toastCtrl
+     * @param {QuotationServiceProvider} _quotationService
      */
     constructor(public _navCtrl: NavController,
         public _alertCtrl: AlertController,
         public _platform: Platform,
         private _network: Network,
         private _accessService: AccessServiceProvider,
-        private _transfer: FileTransfer,
         private _camera: Camera,
-        public _toastCtrl: ToastController) {
+        public _toastCtrl: ToastController,
+        private _quotationService: QuotationServiceProvider) {
 
     }
 
@@ -42,6 +45,21 @@ export class StepThreePage {
      */
     ionViewWillLeave() {
         this.disconnectSubscription.unsubscribe();
+    }
+
+    /**
+     * ngOnInit Implementation
+     */
+    ngOnInit() {
+        let _quotation: Quotation = this._quotationService.getQuotation();
+        if (_quotation) {
+            this._newQuotation = _quotation;
+            if (_quotation.appUserFile) {
+                this._fileURI = _quotation.appUserFile;
+            }
+        } else {
+            this._fileURI = null;
+        }
     }
 
     /**
@@ -83,7 +101,13 @@ export class StepThreePage {
      * quotation, the data must be reloaded to the point where it was going"
      */
     goToStepFour(): void {
-        this._navCtrl.push(StepFourPage);
+        if (this._fileURI) {
+            this._newQuotation.appUserFile = this._fileURI;
+            this._quotationService.setQuotation(this._newQuotation);
+            this._navCtrl.push(StepFourPage);
+        } else {
+            this._navCtrl.push(StepFourPage);
+        }
     }
 
     /** 

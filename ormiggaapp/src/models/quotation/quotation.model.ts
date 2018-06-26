@@ -11,7 +11,8 @@ export interface Quotation {
     createdAtSolicitud?: Date;
     dataItems?: Item[];
     dateFinish?: string;
-    file?: string;
+    appUserFile?: string;
+    file?: Object;
     habilities: any[];
     haveDateContrato: boolean;
     maxPropuestas: number;
@@ -31,6 +32,7 @@ export interface Quotation {
     urgentDateEntrega?: string;
     username?: string;
     notFlexPayForm?: boolean;
+    city?: Object;
 }
 
 /**

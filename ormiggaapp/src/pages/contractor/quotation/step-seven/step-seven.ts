@@ -167,7 +167,7 @@ export class StepSevenPage implements OnInit {
      * Function to create quotation
      */
     createQuotation(): void {
-        let loading_msg = 'Creando solicitud...';
+        let loading_msg = 'En horas, los mejores proveedores del país estarán haciéndote llegar sus propuestas...';
         let loading = this._loadingCtrl.create({ content: loading_msg });
         let _weight: Weight;
         let _itemsAux: WeightDetail[] = [];
@@ -178,10 +178,40 @@ export class StepSevenPage implements OnInit {
         this._quotationService.setQuotation(this._newQuotation);
         loading.present();
         setTimeout(() => {
-            let _quotation: Quotation = this._quotationService.getQuotation();
-            //this._app.getRootNavs()[0].setRoot(ContractorTabsPage);
+            this._quotationService.createQuotation().subscribe((result) => {
+                let dataRSP: any = JSON.parse(atob(result.toString('utf8')));
+                if (dataRSP.status == 200) {
+                    this._quotationService.removeQuotation();
+                    let title = '¡Listo!';
+                    let subtitle = '¡Éxitos con este proyecto!';
+                    let btn = 'Aceptar';
+                    this.presentAlert(title, subtitle, btn, true);
+                } else if (dataRSP.status == 202) {
+                    this._quotationService.removeQuotation();
+                    let title = '¡Tu solicitud fue actualizada con exito!';
+                    let subtitle = 'Ya tus proveedores podrán ver los cambios de la solicitud, y actualizar sus propuestas.';
+                    let btn = 'Aceptar';
+                    this.presentAlert(title, subtitle, btn, true);
+                } else if (dataRSP.status == 400) {
+                    let title = '¡El nombre de la solicitud no es válido!';
+                    let subtitle = 'Ya existe una solicitud con este nombre en nuestra base. ¡Estas a un solo paso para enviar la solicitud!';
+                    let btn = 'Aceptar';
+                    this.presentAlert(title, subtitle, btn, false);
+                } else {
+                    let title = 'Algo salio mal!';
+                    let subtitle = 'Valida la información o comunícate con soporte indicando el código #C002';
+                    let btn = 'Aceptar';
+                    this.presentAlert(title, subtitle, btn, false);
+                }
+            }, (err) => {
+                this._quotationService.removeQuotation();
+                let title = 'Algo salio mal!';
+                let subtitle = 'Comunícate con soporte indicando el código #C002';
+                let btn = 'Aceptar';
+                this.presentAlert(title, subtitle, btn, true);
+            });
             loading.dismiss();
-        }, 3500);
+        }, 5000);
     }
 
     /**
@@ -248,7 +278,7 @@ export class StepSevenPage implements OnInit {
             let title = 'Error de red';
             let subtitle = 'Por favor revisa tu conexión a internet e intenta de nuevo';
             let btn = 'Reintentar';
-            this.presentAlert(title, subtitle, btn);
+            this.presentAlert(title, subtitle, btn, false);
         }, error => console.error(error));
     }
 
@@ -263,14 +293,14 @@ export class StepSevenPage implements OnInit {
                 let title = 'Error de red';
                 let subtitle = 'Por favor revisa tu conexión a internet e intenta de nuevo';
                 let btn = 'Reintentar';
-                this.presentAlert(title, subtitle, btn);
+                this.presentAlert(title, subtitle, btn, false);
             } else {
                 this._accessService.verifyApiConnection().subscribe((result) => { }, (err) => {
                     if (err.status === 0) {
                         let title2 = 'Error de servicio!';
                         let subtitle2 = 'En este momento el servicio de Ormigga no se encuentra disponible. por favor intenta de nuevo.'
                         let btn2 = 'Reintentar'
-                        this.presentAlert(title2, subtitle2, btn2);
+                        this.presentAlert(title2, subtitle2, btn2, false);
                     }
                 });
             }
@@ -280,20 +310,37 @@ export class StepSevenPage implements OnInit {
     /**
      * Present the alert for advice to internet
      */
-    presentAlert(_pTitle: string, _pSubtitle: string, _pBtn: string) {
-        let alert = this._alertCtrl.create({
-            title: _pTitle,
-            subTitle: _pSubtitle,
-            enableBackdropDismiss: false,
-            buttons: [
-                {
-                    text: _pBtn,
-                    handler: () => {
-                        this.isConnected();
+    presentAlert(_pTitle: string, _pSubtitle: string, _pBtn: string, _pRedirect: boolean) {
+        if (!_pRedirect) {
+            let alert = this._alertCtrl.create({
+                title: _pTitle,
+                subTitle: _pSubtitle,
+                enableBackdropDismiss: false,
+                buttons: [
+                    {
+                        text: _pBtn,
+                        handler: () => {
+                            this.isConnected();
+                        }
                     }
-                }
-            ]
-        });
-        alert.present();
+                ]
+            });
+            alert.present();
+        } else {
+            let alert = this._alertCtrl.create({
+                title: _pTitle,
+                subTitle: _pSubtitle,
+                enableBackdropDismiss: false,
+                buttons: [
+                    {
+                        text: _pBtn,
+                        handler: () => {
+                            this._app.getRootNavs()[0].setRoot(ContractorTabsPage);
+                        }
+                    }
+                ]
+            });
+            alert.present();
+        }
     }
 }

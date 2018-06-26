@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { App } from 'ionic-angular';
 import { Observable } from 'rxjs';
 import { retry } from 'rxjs/operators';
@@ -38,7 +38,7 @@ export class AccessServiceProvider {
     /**
      * Function to get token from local storage
      */
-    private getToken(): string {
+    public getToken(): string {
         if (!this.token) {
             this.token = localStorage.getItem('ormigga-token');
         }

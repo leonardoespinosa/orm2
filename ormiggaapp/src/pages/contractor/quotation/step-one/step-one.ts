@@ -99,6 +99,13 @@ export class StepOnePage implements OnInit {
                     "En 30 días": 0,
                     "En 60 días": 0,
                     "En 90 días": 0
+                },
+                timestart: 'En menos de 15 días',
+                city: {
+                    selected: {
+                        'city': 'Bogota',
+                        'dep': 'Cundinamarca'
+                    }
                 }
             }
             this._nameRequest = '';
