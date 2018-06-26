@@ -196,7 +196,7 @@ export class StepSevenPage implements OnInit {
                     let title = '¡El nombre de la solicitud no es válido!';
                     let subtitle = 'Ya existe una solicitud con este nombre en nuestra base. ¡Estas a un solo paso para enviar la solicitud!';
                     let btn = 'Aceptar';
-                    this.presentAlert(title, subtitle, btn, false);
+                    this.presentAlert(title, subtitle, btn, true);
                 } else {
                     let title = 'Algo salio mal!';
                     let subtitle = 'Valida la información o comunícate con soporte indicando el código #C002';

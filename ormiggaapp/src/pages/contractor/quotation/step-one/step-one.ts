@@ -78,7 +78,7 @@ export class StepOnePage implements OnInit {
             this._newQuotation = {
                 client: _currentUser.name,
                 username: _currentUser.username,
-                tokenContratante: _currentUser.token_user,
+                tokenContratante: _currentUser.uuid,
                 name: _currentUser.name,
                 countProffers: 0,
                 habilities: [],
@@ -118,6 +118,7 @@ export class StepOnePage implements OnInit {
      * Function to cancel quotation creation
      */
     cancel(): void {
+        this._quotationService.removeQuotation();
         this._navCtrl.pop();
     }
 

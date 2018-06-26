@@ -14,7 +14,8 @@ export class QuotationServiceProvider {
         'Authorization': btoa(this._accessService.getCurrentUser().accessToken),
         'Apikey': btoa(this._accessService.getCurrentUser().apikey),
         'Privatekey': btoa(this._accessService.getCurrentUser().privatekey),
-        'token': btoa(this._accessService.getCurrentUser().uuid)
+        'token': btoa(this._accessService.getCurrentUser().uuid),
+        'typeAccess': 'mobile'
     });
 
     /**
@@ -53,7 +54,7 @@ export class QuotationServiceProvider {
      * @param {string} type 
      * @param {string} object 
      */
-    private request(type: 'files/uploadsS3' | 'contratante/1.0/createSolicitud2' | '', object?: Object): Observable<any> {
+    private request(type: 'files/uploadsS3' | 'contratante/1.0/createSolicitud2' | 'contratante/1.0/viewRequest', object?: Object): Observable<any> {
         let base;
 
         if (type === 'files/uploadsS3') {
@@ -118,5 +119,20 @@ export class QuotationServiceProvider {
         };
 
         return this.request('contratante/1.0/createSolicitud2', _objectToSend);
+    }
+
+    /**
+     * Function to return user requests
+     */
+    public viewRequests(): Observable<any> {
+        let _objectToSend = {
+            token: this._accessService.getCurrentUser().uuid,
+            page: 1,
+            action: "back",
+            tokenSolicitud: "",
+            user_uuid: this._accessService.getCurrentUser().user_uuid
+        };
+
+        return this.request('contratante/1.0/viewRequest', _objectToSend);
     }
 }

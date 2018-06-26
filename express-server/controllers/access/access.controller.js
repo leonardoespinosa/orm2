@@ -39,8 +39,8 @@ module.exports.login = async function (req, res, next) {
     } else {
       let resultAct = rethinkdb.table('users')
         .filter({ username: _userDecode.data.username })
-        .update({ tokenAccess: _accessToken }).run(req._rdb)
-      // .update({ tokenAccess: _accessToken, multisession: rethinkdb.row['multisession'].default([]).append(_accessToken) }).run(req._rdbConn);
+        .update({ multisession: rethinkdb.row('multisession').default([]).append(_accessToken) }).run(req._rdb);
+        //.update({ tokenAccess: _accessToken }).run(req._rdb)
     }
 
     if (user.password === utils.encrypt(_userDecode.data.password)) {
