@@ -11,7 +11,8 @@ import { QuotationServiceProvider } from '../../../providers/quotation-service';
 })
 export class RequestPage {
 
-    private _allSolicitudesLoaded: any[] = [];
+    private _allRequestLoaded: any[] = [];
+    private _page = 0;
     private disconnectSubscription: Subscription;
 
     /**
@@ -45,15 +46,43 @@ export class RequestPage {
      * ionViewWillEnter Implementation
      */
     ionViewWillEnter() {
-        this._quotationService.viewRequests().subscribe((result) => {
+        this._allRequestLoaded = [];
+        this._quotationService.viewRequests(1, "back").subscribe((result) => {
             this._ngZone.run(() => {
                 let _dataRSP: any = JSON.parse(atob(result.toString('utf8')));
-                console.log(_dataRSP);
+                if (_dataRSP.status === 200) {
+                    this._allRequestLoaded = _dataRSP.data;
+                }
             });
         }, (err) => {
-            console.log('print error');
-            console.log(err);
+            let title2 = 'Error!';
+            let subtitle2 = 'En este momento no es posible cargar las solicitudes. por favor intenta de nuevo.'
+            let btn2 = 'Reintentar'
+            this.presentAlert(title2, subtitle2, btn2);
         });
+    }
+
+    doInfinite(infiniteScroll) {
+        this._page++;
+        setTimeout(() => {
+            this._quotationService.viewRequests(this._page, "next").subscribe((result) => {
+                this._ngZone.run(() => {
+                    let _dataRSP: any = JSON.parse(atob(result.toString('utf8')));
+                    if (_dataRSP.status === 200) {
+                        _dataRSP.data.forEach((element) => {
+                            this._allRequestLoaded.push(element);
+                        });
+                    }
+                });
+            }, (err) => {
+                let title2 = 'Error!';
+                let subtitle2 = 'En este momento no es posible cargar las solicitudes. por favor intenta de nuevo.'
+                let btn2 = 'Reintentar'
+                this.presentAlert(title2, subtitle2, btn2);
+            });
+
+            infiniteScroll.complete();
+        }, 700);
     }
 
     /** 

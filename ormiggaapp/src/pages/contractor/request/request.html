@@ -7,37 +7,32 @@
 </ion-header>
 <ion-content padding>
     <ion-searchbar></ion-searchbar>
-    <ion-card>
+    <ion-card *ngFor="let request of _allRequestLoaded">
+        <ion-item>
+            <ion-avatar item-start>
+                <img src="assets/imgs/avatar-ormigga.png">
+            </ion-avatar>
+            <h2 style="white-space: normal;">{{request.nameRequest}}</h2>
+            <p>{{request.createdAtSolicitud | date: 'dd MMM yyyy'}}</p>
+        </ion-item>
         <img style=" width: 296px;height: 220px;" src="assets/imgs/libretas.png">
-        <ion-item>
-            <ion-icon color="primary" name="create" item-start large></ion-icon>
-            <h2 style="white-space: normal;">Libretas en pasta dura contramarcadas</h2>
-        </ion-item>
-        <ion-item>
-            <ion-icon color="primary" name="hand" item-left large></ion-icon>
-            <h2>16 Respuestas</h2>
-        </ion-item>
+        <ion-card-content>
+            <p>{{request.questions["Descripción del requerimiento"]}}</p>
+        </ion-card-content>
+        <ion-row>
+            <ion-col center text-center>
+                <ion-note>
+                    {{request.countProffers}} Propuestas
+                </ion-note>
+            </ion-col>
+            <ion-col center text-center>
+                <ion-note>
+                    Estado: {{request.statusSolicitud}}
+                </ion-note>
+            </ion-col>
+        </ion-row>
     </ion-card>
-    <ion-card>
-        <img style=" width: 296px;height: 220px;" src="assets/imgs/cuadernos.jpg">
-        <ion-item>
-            <ion-icon color="primary" name="create" item-start large></ion-icon>
-            <h2 style="white-space: normal;">Impresion 10 cuadernos caratula</h2>
-        </ion-item>
-        <ion-item>
-            <ion-icon color="primary" name="hand" item-left large></ion-icon>
-            <h2>14 Respuestas</h2>
-        </ion-item>
-    </ion-card>
-    <ion-card>
-        <img style=" width: 296px;height: 220px;" src="assets/imgs/volantes.jpg">
-        <ion-item>
-            <ion-icon color="primary" name="create" item-start large></ion-icon>
-            <h2 style="white-space: normal;">Volantes de Promocion</h2>
-        </ion-item>
-        <ion-item>
-            <ion-icon color="primary" name="hand" item-left large></ion-icon>
-            <h2>22 Respuestas</h2>
-        </ion-item>
-    </ion-card>
+    <ion-infinite-scroll (ionInfinite)="doInfinite($event)">
+        <ion-infinite-scroll-content></ion-infinite-scroll-content>
+    </ion-infinite-scroll>
 </ion-content>

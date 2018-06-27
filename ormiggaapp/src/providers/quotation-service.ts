@@ -124,11 +124,11 @@ export class QuotationServiceProvider {
     /**
      * Function to return user requests
      */
-    public viewRequests(): Observable<any> {
+    public viewRequests(_pPage:number, _pAction:string): Observable<any> {
         let _objectToSend = {
             token: this._accessService.getCurrentUser().uuid,
-            page: 1,
-            action: "back",
+            page: _pPage,
+            action: _pAction,
             tokenSolicitud: "",
             user_uuid: this._accessService.getCurrentUser().user_uuid
         };
