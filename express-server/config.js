@@ -5,7 +5,7 @@ module.exports = {
     port: process.env.SERVER_PORT || 3001
   },
   rethinkdb: {
-    host: process.env.DB_HOST || 'localhost',
+    host: process.env.DB_HOST || '45.55.55.181',
     port: process.env.DB_PORT || 28015,
     authKey: '',
     db: process.env.DB_NAME || 'ormigga'

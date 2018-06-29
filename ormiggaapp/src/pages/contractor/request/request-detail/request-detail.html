@@ -1,0 +1,69 @@
+<ion-header>
+    <ion-navbar>
+        <ion-title class="title">Detalle de Solicitud</ion-title>
+    </ion-navbar>
+</ion-header>
+<ion-content>
+    <div *ngIf="_request">
+        <h3 style="text-align: center; white-space: normal">{{_request.nameRequest}}</h3>
+        <p *ngIf="_request.questions" padding>{{_request.questions["Descripción del requerimiento"]}}</p>
+        <ion-item-group>
+            <ion-item-divider color="light">Detalle de items por cantidad</ion-item-divider>
+            <ion-list *ngIf="_request.dataItems">
+                <ion-item *ngFor="let item of _request.dataItems">
+                    <h2>{{item.description}}</h2>
+                    <h3>
+                        <span>Cantidad: {{item.quantity}}</span>
+                        <span *ngIf="item.valSuggest"> - Presupuesto: $ {{item.valSuggest}}</span>
+                    </h3>
+                </ion-item>
+            </ion-list>
+
+            <ion-item-divider color="light">¿Hasta qué día máximo recibirás propuestas?</ion-item-divider>
+            <ion-item>{{_request.dateFinish | date: 'dd MMM yyyy'}}</ion-item>
+
+            <ion-item-divider color="light">¿En cuánto tiempo iniciarás el contrato?</ion-item-divider>
+            <ion-item>{{_request.timestart}}</ion-item>
+
+            <ion-item-divider color="light">Fecha en la que debes recibir el producto</ion-item-divider>
+            <ion-item>{{_request.urgentDateEntrega | date: 'dd MMM yyyy HH:mm'}}</ion-item>
+
+            <ion-item-divider color="light">¿Necesitas muestras del producto / material?</ion-item-divider>
+            <ion-item *ngIf="_request.smuestrasfisicas">Muestras Físicas: Si</ion-item>
+            <ion-item *ngIf="!_request.smuestrasfisicas">Muestras Físicas: No</ion-item>
+            <ion-item *ngIf="_request.smuestrasdigitales">Muestras Digitales: Si</ion-item>
+            <ion-item *ngIf="!_request.smuestrasdigitales">Muestras Digitales: No</ion-item>
+
+            <div *ngIf="_request.pago">
+                <ion-item-divider color="light">Forma de Pago</ion-item-divider>
+                <ion-item *ngIf="_request.pago.anticipo && _request.pago.anticipo > 0">{{ _request.pago.anticipo}}% Anticipo</ion-item>
+                <ion-item *ngIf="_request.pago.pagoentrega && _request.pago.pagoentrega > 0">{{ _request.pago.pagoentrega}}% Contraentrega</ion-item>
+                <ion-item *ngIf="_request.pago['En 30 días'] && _request.pago['En 30 días'] > 0">{{ _request.pago["En 30 días"]}}% a 30 días</ion-item>
+                <ion-item *ngIf="_request.pago['En 60 días'] && _request.pago['En 60 días'] > 0">{{ _request.pago["En 60 días"]}}% a 60 días</ion-item>
+                <ion-item *ngIf="_request.pago['En 90 días'] && _request.pago['En 90 días'] > 0">{{ _request.pago["En 90 días"]}}% a 90 días</ion-item>
+            </div>
+
+            <ion-item-divider color="light">La Solicitud se evaluará bajo los criterios:</ion-item-divider>
+            <ion-row>
+                <ion-col center text-center>
+                    <ion-note style="color: #08ad9f;">Variable Puntaje</ion-note>
+                </ion-col>
+                <ion-col center text-center>
+                    <ion-note style="color: #08ad9f;">Porcentaje</ion-note>
+                </ion-col>
+            </ion-row>
+            <div *ngIf="_request.peso">
+                <div *ngFor='let key of objectKeys(_request.peso)'>
+                    <ion-row *ngIf="_request.peso[key].status && _request.peso[key].value != '0'">
+                        <ion-col center text-center>
+                            <ion-note style="color: black;">{{_request.peso[key].text}}</ion-note>
+                        </ion-col>
+                        <ion-col center text-center>
+                            <ion-note style="color: black">{{_request.peso[key].value}}%</ion-note>
+                        </ion-col>
+                    </ion-row>
+                </div>
+            </div>
+        </ion-item-group>
+    </div>
+</ion-content>

@@ -6,8 +6,7 @@
     </ion-navbar>
 </ion-header>
 <ion-content padding>
-    <ion-searchbar></ion-searchbar>
-    <ion-card *ngFor="let request of _allRequestLoaded">
+    <ion-card *ngFor="let request of _allRequestLoaded" (click)="viewRequestDetail(request.tokenSolicitud)">
         <ion-item>
             <ion-avatar item-start>
                 <img src="assets/imgs/avatar-ormigga.png">
@@ -21,12 +20,12 @@
         </ion-card-content>
         <ion-row>
             <ion-col center text-center>
-                <ion-note>
+                <ion-note style="color: #08ad9f;">
                     {{request.countProffers}} Propuestas
                 </ion-note>
             </ion-col>
             <ion-col center text-center>
-                <ion-note>
+                <ion-note style="color: #08ad9f;">
                     Estado: {{request.statusSolicitud}}
                 </ion-note>
             </ion-col>

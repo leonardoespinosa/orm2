@@ -54,7 +54,7 @@ export class QuotationServiceProvider {
      * @param {string} type 
      * @param {string} object 
      */
-    private request(type: 'files/uploadsS3' | 'contratante/1.0/createSolicitud2' | 'contratante/1.0/viewRequest', object?: Object): Observable<any> {
+    private request(type: 'files/uploadsS3' | 'contratante/1.0/createSolicitud2' | 'contratante/1.0/viewRequest' | 'contratante/1.0/getSolicitudData', object?: Object): Observable<any> {
         let base;
 
         if (type === 'files/uploadsS3') {
@@ -124,7 +124,7 @@ export class QuotationServiceProvider {
     /**
      * Function to return user requests
      */
-    public viewRequests(_pPage:number, _pAction:string): Observable<any> {
+    public viewRequests(_pPage: number, _pAction: string): Observable<any> {
         let _objectToSend = {
             token: this._accessService.getCurrentUser().uuid,
             page: _pPage,
@@ -134,5 +134,18 @@ export class QuotationServiceProvider {
         };
 
         return this.request('contratante/1.0/viewRequest', _objectToSend);
+    }
+
+    /**
+     * Function to view request detail
+     * @param {string} _pTokenRequest 
+     */
+    public viewRequestData(_pTokenRequest: string): Observable<any> {
+        let _objectToSend = {
+            token: this._accessService.getCurrentUser().uuid,
+            tokenSolicitud: _pTokenRequest
+        }
+
+        return this.request('contratante/1.0/getSolicitudData', _objectToSend);
     }
 }

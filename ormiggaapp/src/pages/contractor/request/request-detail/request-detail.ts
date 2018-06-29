@@ -1,39 +1,41 @@
-import { Component, NgZone } from '@angular/core';
-import { NavController, AlertController, Platform } from 'ionic-angular';
+import { Component, OnInit, NgZone } from '@angular/core';
+import { NavController, NavParams, AlertController, Platform } from 'ionic-angular';
 import { Network } from '@ionic-native/network';
 import { Subscription } from 'rxjs';
-import { AccessServiceProvider } from '../../../providers/access-service';
-import { QuotationServiceProvider } from '../../../providers/quotation-service';
-import { RequestDetailPage } from './request-detail/request-detail';
+import { QuotationServiceProvider } from '../../../../providers/quotation-service';
+import { AccessServiceProvider } from '../../../../providers/access-service';
 
 @Component({
-    selector: 'page-request',
-    templateUrl: 'request.html'
+    selector: 'page-request-detail',
+    templateUrl: 'request-detail.html'
 })
-export class RequestPage {
+export class RequestDetailPage implements OnInit {
 
-    private _allRequestLoaded: any[] = [];
-    private _page = 0;
+    private _token: string;
+    private _request: any = {};
+    private objectKeys = Object.keys;
     private disconnectSubscription: Subscription;
 
     /**
-     * RequestPage Constructor
-     * @param {NavController} _navCtrl 
+     * RequestDetailPage Constructor
+     * @param {NavController} navCtrl 
+     * @param {NavParams} _navParams 
      * @param {AlertController} _alertCtrl 
      * @param {Platform} _platform 
      * @param {Network} _network 
      * @param {NgZone} _ngZone
      * @param {AccessServiceProvider} _accessService 
-     * @param {QuotationServiceProvider} _quotationService
+     * @param {QuotationServiceProvider} _quotationService 
      */
-    constructor(public _navCtrl: NavController,
+    constructor(public navCtrl: NavController,
+        public _navParams: NavParams,
         public _alertCtrl: AlertController,
         public _platform: Platform,
         private _network: Network,
         private _ngZone: NgZone,
         private _accessService: AccessServiceProvider,
         private _quotationService: QuotationServiceProvider) {
-
+        this._token = this._navParams.get("token");
     }
 
     /**
@@ -47,56 +49,33 @@ export class RequestPage {
      * ionViewWillEnter Implementation
      */
     ionViewWillEnter() {
-        this._allRequestLoaded = [];
-        this._page = 0;
-        this._quotationService.viewRequests(1, "back").subscribe((result) => {
+        this._quotationService.viewRequestData(this._token).subscribe((result) => {
             this._ngZone.run(() => {
                 let _dataRSP: any = JSON.parse(atob(result.toString('utf8')));
                 if (_dataRSP.status === 200) {
-                    this._allRequestLoaded = _dataRSP.data;
+                    this._request = _dataRSP.data;
                 }
             });
         }, (err) => {
-            let title2 = 'Error!';
-            let subtitle2 = 'En este momento no es posible cargar las solicitudes. por favor intenta de nuevo.'
-            let btn2 = 'Reintentar'
-            this.presentAlert(title2, subtitle2, btn2);
+            let title = 'Error!';
+            let subtitle = 'En este momento no es posible mostrar el detalle de la solicitud. por favor intenta de nuevo.'
+            let btn = 'Reintentar'
+            this.presentAlert(title, subtitle, btn);
         });
     }
 
     /**
-     * Function to view request detail
-     * @param {string} _pToken 
+     * ngOnInit Implementation
      */
-    viewRequestDetail(_pTokenRequest:string): void {
-        this._navCtrl.push(RequestDetailPage, { token: _pTokenRequest });
+    ngOnInit() {
+
     }
 
     /**
-     * Function to recharge request
-     * @param {any} infiniteScroll 
+     * Function to return
      */
-    doInfinite(infiniteScroll) {
-        this._page++;
-        setTimeout(() => {
-            this._quotationService.viewRequests(this._page, "next").subscribe((result) => {
-                this._ngZone.run(() => {
-                    let _dataRSP: any = JSON.parse(atob(result.toString('utf8')));
-                    if (_dataRSP.status === 200) {
-                        _dataRSP.data.forEach((element) => {
-                            this._allRequestLoaded.push(element);
-                        });
-                    }
-                });
-            }, (err) => {
-                let title2 = 'Error!';
-                let subtitle2 = 'En este momento no es posible cargar las solicitudes. por favor intenta de nuevo.'
-                let btn2 = 'Reintentar'
-                this.presentAlert(title2, subtitle2, btn2);
-            });
-
-            infiniteScroll.complete();
-        }, 700);
+    backToRequest(): void {
+        this.navCtrl.pop();
     }
 
     /** 

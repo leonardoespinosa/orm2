@@ -1,4 +1,4 @@
-page-step-one {
+page-request-detail {
     .toolbar-title-md {
         color: white !important;
     }
@@ -19,32 +19,5 @@ page-step-one {
 
     .title {
         color: white;
-    }
-
-    .title-page {
-        text-align: center;
-    }
-
-    .msg {
-        text-align: justify;
-        margin: 0;
-    }
-
-    .buttons {
-        box-shadow: 0 -2px 2px -2px #666 !important;
-        background: whitesmoke;
-        
-        .step-btn {
-            width: 48%;
-        }
-    }
-
-    .item {
-        padding-left: 0;
-    }
-
-    .lbl {
-        white-space: normal; 
-        color: #666 !important;
     }
 }

@@ -12,6 +12,7 @@ import { StepFourPage } from '../pages/contractor/quotation/step-four/step-four'
 import { StepFivePage } from '../pages/contractor/quotation/step-five/step-five';
 import { StepSixPage } from '../pages/contractor/quotation/step-six/step-six';
 import { StepSevenPage } from '../pages/contractor/quotation/step-seven/step-seven';
+import { RequestDetailPage } from '../pages/contractor/request/request-detail/request-detail';
 
 export const PAGES_DECLARATIONS = [
     SigninPage,
@@ -27,5 +28,6 @@ export const PAGES_DECLARATIONS = [
     StepFourPage,
     StepFivePage,
     StepSixPage,
-    StepSevenPage
+    StepSevenPage,
+    RequestDetailPage
 ];
