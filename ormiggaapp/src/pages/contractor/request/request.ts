@@ -1,5 +1,5 @@
 import { Component, NgZone } from '@angular/core';
-import { NavController, AlertController, Platform } from 'ionic-angular';
+import { NavController, AlertController, Platform, LoadingController } from 'ionic-angular';
 import { Network } from '@ionic-native/network';
 import { Subscription } from 'rxjs';
 import { AccessServiceProvider } from '../../../providers/access-service';
@@ -23,6 +23,7 @@ export class RequestPage {
      * @param {Platform} _platform 
      * @param {Network} _network 
      * @param {NgZone} _ngZone
+     * @param {LoadingController} _loadingCtrl
      * @param {AccessServiceProvider} _accessService 
      * @param {QuotationServiceProvider} _quotationService
      */
@@ -31,6 +32,7 @@ export class RequestPage {
         public _platform: Platform,
         private _network: Network,
         private _ngZone: NgZone,
+        public _loadingCtrl: LoadingController,
         private _accessService: AccessServiceProvider,
         private _quotationService: QuotationServiceProvider) {
 
@@ -49,14 +51,20 @@ export class RequestPage {
     ionViewWillEnter() {
         this._allRequestLoaded = [];
         this._page = 0;
+
+        let loading_msg = 'Cargando...';
+        let loading = this._loadingCtrl.create({ content: loading_msg });
+        loading.present();
         this._quotationService.viewRequests(1, "back").subscribe((result) => {
             this._ngZone.run(() => {
                 let _dataRSP: any = JSON.parse(atob(result.toString('utf8')));
                 if (_dataRSP.status === 200) {
                     this._allRequestLoaded = _dataRSP.data;
                 }
+                loading.dismiss();
             });
         }, (err) => {
+            loading.dismiss();
             let title2 = 'Error!';
             let subtitle2 = 'En este momento no es posible cargar las solicitudes. por favor intenta de nuevo.'
             let btn2 = 'Reintentar'
@@ -68,7 +76,7 @@ export class RequestPage {
      * Function to view request detail
      * @param {string} _pToken 
      */
-    viewRequestDetail(_pTokenRequest:string): void {
+    viewRequestDetail(_pTokenRequest: string): void {
         this._navCtrl.push(RequestDetailPage, { token: _pTokenRequest });
     }
 

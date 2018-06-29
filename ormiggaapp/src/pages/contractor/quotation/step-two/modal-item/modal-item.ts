@@ -9,6 +9,7 @@ import { Item } from '../../../../../models/quotation/item.model';
 export class ModalItem {
 
     private _item: Item;
+    private _index: number;
 
     /**
      * ModalItem Constructor
@@ -22,6 +23,7 @@ export class ModalItem {
         public _toastCtrl: ToastController,
         public _loadingCtrl: LoadingController) {
         this._item = this._params.get('item');
+        this._index = this._params.get('index');
     }
 
     /**

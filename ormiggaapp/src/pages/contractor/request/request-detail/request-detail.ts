@@ -1,5 +1,5 @@
 import { Component, OnInit, NgZone } from '@angular/core';
-import { NavController, NavParams, AlertController, Platform } from 'ionic-angular';
+import { NavController, NavParams, AlertController, Platform, LoadingController } from 'ionic-angular';
 import { Network } from '@ionic-native/network';
 import { Subscription } from 'rxjs';
 import { QuotationServiceProvider } from '../../../../providers/quotation-service';
@@ -24,6 +24,7 @@ export class RequestDetailPage implements OnInit {
      * @param {Platform} _platform 
      * @param {Network} _network 
      * @param {NgZone} _ngZone
+     * @param {LoadingController} _loadingCtrl
      * @param {AccessServiceProvider} _accessService 
      * @param {QuotationServiceProvider} _quotationService 
      */
@@ -33,6 +34,7 @@ export class RequestDetailPage implements OnInit {
         public _platform: Platform,
         private _network: Network,
         private _ngZone: NgZone,
+        public _loadingCtrl: LoadingController,
         private _accessService: AccessServiceProvider,
         private _quotationService: QuotationServiceProvider) {
         this._token = this._navParams.get("token");
@@ -49,14 +51,20 @@ export class RequestDetailPage implements OnInit {
      * ionViewWillEnter Implementation
      */
     ionViewWillEnter() {
+        let loading_msg = 'Cargando...';
+        let loading = this._loadingCtrl.create({ content: loading_msg });
+        loading.present();
+
         this._quotationService.viewRequestData(this._token).subscribe((result) => {
             this._ngZone.run(() => {
                 let _dataRSP: any = JSON.parse(atob(result.toString('utf8')));
                 if (_dataRSP.status === 200) {
                     this._request = _dataRSP.data;
                 }
+                loading.dismiss();
             });
         }, (err) => {
+            loading.dismiss();
             let title = 'Error!';
             let subtitle = 'En este momento no es posible mostrar el detalle de la solicitud. por favor intenta de nuevo.'
             let btn = 'Reintentar'

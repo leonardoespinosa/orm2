@@ -93,7 +93,7 @@ export class StepTwoPage implements OnInit {
      */
     AddItem(): void {
         let _item: Item = { description: '', quantity: null, createBy: 'Contratante', valSuggest: null };
-        let modal = this._modalCtrl.create( ModalItem, { item: _item });
+        let modal = this._modalCtrl.create( ModalItem, { item: _item, index: (this._items.length + 1) });
         modal.onDidDismiss(data => {
             if (typeof data != "undefined" || data != null) {
                 let _itemToInsert: Item = {

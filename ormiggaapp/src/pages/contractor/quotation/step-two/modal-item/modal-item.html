@@ -1,6 +1,6 @@
 <ion-header>
     <ion-toolbar>
-        <ion-title class="title">Agregar Item</ion-title>
+        <ion-title class="title">Agregar Item # {{_index}}</ion-title>
         <ion-buttons start>
             <button ion-button (click)="close()">
                 <span ion-text class="cancel-btn" showWhen="ios">Cancelar</span>
@@ -21,7 +21,7 @@
         </ion-item>
         <ion-item class="item">
             <ion-label class="lbl" floating>Presupuesto</ion-label>
-            <ion-input type="number" [(ngModel)]="_item.valSuggest"></ion-input>
+            <span>$</span><ion-input type="number" [(ngModel)]="_item.valSuggest"></ion-input>
         </ion-item>
     </ion-list>
     <button ion-button block outline (click)="closeWithNewItem()">
