@@ -1,0 +1,25 @@
+page-request{
+    .name-request {
+        white-space: normal;
+        font-size: larger;
+        color: black;
+    }
+
+    .card-img {
+        width: 296px;
+        height: 220px;
+    }
+
+    .request-card {
+        margin-bottom: 0;
+    }
+    
+    .proposal {
+        text-align: center;
+
+        .btn {
+            margin-top: 0;
+            width: 94%;
+        }
+    }
+}

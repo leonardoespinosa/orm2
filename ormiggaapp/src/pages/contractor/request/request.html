@@ -6,31 +6,28 @@
     </ion-navbar>
 </ion-header>
 <ion-content padding>
-    <ion-card *ngFor="let request of _allRequestLoaded" (click)="viewRequestDetail(request.tokenSolicitud)">
-        <ion-item>
-            <ion-avatar item-start>
-                <img src="assets/imgs/avatar-ormigga.png">
-            </ion-avatar>
-            <h2 style="white-space: normal;">{{request.nameRequest}}</h2>
-            <p>{{request.createdAtSolicitud | date: 'dd MMM yyyy'}}</p>
-        </ion-item>
-        <img style=" width: 296px;height: 220px;" src="assets/imgs/libretas.png">
-        <ion-card-content>
-            <p>{{request.questions["Descripción del requerimiento"]}}</p>
-        </ion-card-content>
-        <ion-row>
-            <ion-col center text-center>
-                <ion-note style="color: #08ad9f;">
-                    {{request.countProffers}} Propuestas
-                </ion-note>
-            </ion-col>
-            <ion-col center text-center>
-                <ion-note style="color: #08ad9f;">
-                    Estado: {{request.statusSolicitud}}
-                </ion-note>
-            </ion-col>
-        </ion-row>
-    </ion-card>
+    <div *ngFor="let request of _allRequestLoaded">
+        <ion-card class="request-card" (click)="viewRequestDetail(request.tokenSolicitud)">
+            <ion-item>
+                <ion-avatar item-start>
+                    <img src="assets/imgs/avatar-ormigga.png">
+                </ion-avatar>
+                <p class="name-request">{{request.nameRequest}}</p>
+                <p>{{request.createdAtSolicitud | date: 'dd MMM yyyy'}}</p>
+                <p>Estado: {{request.statusSolicitud}}</p>
+            </ion-item>
+            <img class="card-img" src="assets/imgs/libretas.png">
+            <ion-card-content>
+                <p>{{request.questions["Descripción del requerimiento"]}}</p>
+            </ion-card-content>
+        </ion-card>
+        <div class="proposal">
+            <button class="btn" ion-button icon-start>
+                <ion-icon name="clipboard"></ion-icon>
+                {{request.countProffers}} Propuestas
+            </button>
+        </div>
+    </div>
     <ion-infinite-scroll (ionInfinite)="doInfinite($event)">
         <ion-infinite-scroll-content></ion-infinite-scroll-content>
     </ion-infinite-scroll>

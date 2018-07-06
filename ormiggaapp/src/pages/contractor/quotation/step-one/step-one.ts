@@ -149,7 +149,7 @@ export class StepOnePage implements OnInit {
     startRecord(): void {
         this._recordIndex = this._recordIndex + 1;
         if (this._platform.is('ios')) {
-            this._fileName = 'Solicitud_#' + this._recordIndex.toString() + '_' + new Date().getDate() + '-' + (new Date().getMonth() + 1) + '-' + new Date().getFullYear() + '.mp3';
+            this._fileName = 'Solicitud_#' + this._recordIndex.toString() + '_' + new Date().getDate() + '-' + (new Date().getMonth() + 1) + '-' + new Date().getFullYear() + '.3gp';
             this._filePath = this._file.documentsDirectory.replace(/file:\/\//g, '') + this._fileName;
             this._audio = this._media.create(this._filePath);
         } else if (this._platform.is('android')) {
