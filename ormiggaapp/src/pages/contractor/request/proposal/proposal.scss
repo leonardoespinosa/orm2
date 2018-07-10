@@ -1,4 +1,4 @@
-page-request-detail {
+page-proposal {
     .toolbar-title-md {
         color: white !important;
     }
@@ -21,34 +21,19 @@ page-request-detail {
         color: white;
     }
 
-    .proposal-btn {
-        width: 100%;
-    }
-
-    .request-name {
-        text-align: center; 
-        white-space: normal;
-        color: #5e280d;
-    }
-
-    .items-title {
-        white-space: normal;
-        color: #5e280d;
-    }
-
-    .card-title {
-        white-space: normal;
-        color: #5e280d;
+    .info {
         text-align: center;
+
+        .icon-color {
+            color: orange;
+        }
     }
 
-    .criteria {
-        .title {
-            color: #08ad9f;
-        }
+    .description {
+        font-weight: bold;
+    }
 
-        .detail {
-            color: black;
-        }
+    .description-detail {
+        text-align: justify;
     }
 }

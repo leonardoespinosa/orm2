@@ -22,7 +22,7 @@
             </ion-card-content>
         </ion-card>
         <div class="proposal">
-            <button class="btn" ion-button icon-start>
+            <button class="btn" ion-button icon-start (click)="viewRequestProposals(request.tokenSolicitud)" [disabled]="!(request.countProffers > 0)">
                 <ion-icon name="clipboard"></ion-icon>
                 {{request.countProffers}} Propuestas
             </button>

@@ -5,15 +5,15 @@
 </ion-header>
 <ion-content padding>
     <div *ngIf="_request">
-        <button class="btn" ion-button icon-start style="width: 100%;">
+        <button class="proposal-btn" ion-button icon-start (click)="viewRequestProposals()" [disabled]="!(_request.countProffers > 0)">
             <ion-icon name="clipboard"></ion-icon>
             {{_request.countProffers}} Propuestas
         </button>
         <ion-card>
-            <ion-card-header style="text-align: center; white-space: normal;color: #5e280d;">{{_request.nameRequest}}</ion-card-header>
+            <ion-card-header class="request-name">{{_request.nameRequest}}</ion-card-header>
             <ion-card-content *ngIf="_request.questions">{{_request.questions["Descripción del requerimiento"]}}</ion-card-content>
             <ion-item>
-                <h2 style="white-space: normal;color: #5e280d;">Items por cantidad</h2>
+                <h2 class="items-title">Items por cantidad</h2>
             </ion-item>
             <ion-list *ngIf="_request.dataItems">
                 <ion-item *ngFor="let item of _request.dataItems">
@@ -25,8 +25,8 @@
         </ion-card>
         <ion-card>
             <ion-item>
-                <i item-start class="fa fa-calendar-check-o fa-4x" aria-hidden="true" style="color:#08ad9f"></i>
-                <h2 style="white-space: normal;color: #5e280d;text-align: center;">¿Hasta qué día máximo recibirás propuestas?</h2>
+                <i item-start class="fa fa-calendar-check-o fa-4x" aria-hidden="true" style="color:#08ad9f;"></i>
+                <h2 class="card-title">¿Hasta qué día máximo recibirás propuestas?</h2>
                 <div style="text-align: center">
                     <p>{{_request.dateFinish | date: 'dd MMM yyyy'}}</p>
                 </div>
@@ -34,8 +34,8 @@
         </ion-card>
         <ion-card>
             <ion-item>
-                <i item-start class="fa fa-clock-o fa-4x" aria-hidden="true" style="color:#08ad9f"></i>
-                <h2 style="white-space: normal;color: #5e280d;text-align: center;">¿En cuánto tiempo iniciarás el contrato?</h2>
+                <i item-start class="fa fa-clock-o fa-4x" aria-hidden="true" style="color:#08ad9f;"></i>
+                <h2 class="card-title">¿En cuánto tiempo iniciarás el contrato?</h2>
                 <div style="text-align: center">
                     <p>{{_request.timestart}}</p>
                 </div>
@@ -43,8 +43,8 @@
         </ion-card>
         <ion-card>
             <ion-item>
-                <i item-start class="fa fa-calendar-times-o fa-4x" aria-hidden="true" style="color:#08ad9f"></i>
-                <h2 style="white-space: normal;color: #5e280d;text-align: center;">Fecha en la que debes recibir el producto</h2>
+                <i item-start class="fa fa-calendar-times-o fa-4x" aria-hidden="true" style="color:#08ad9f;"></i>
+                <h2 class="card-title">Fecha en la que debes recibir el producto</h2>
                 <div style="text-align: center">
                     <p>{{_request.urgentDateEntrega | date: 'dd MMM yyyy HH:mm'}}</p>
                 </div>
@@ -52,8 +52,8 @@
         </ion-card>
         <ion-card>
             <ion-item>
-                <i item-start class="fa fa-hand-paper-o fa-4x" aria-hidden="true" style="color:#08ad9f"></i>
-                <h2 style="white-space: normal;color: #5e280d;text-align: center;">¿Necesitas muestras del producto?</h2>
+                <i item-start class="fa fa-hand-paper-o fa-4x" aria-hidden="true" style="color:#08ad9f;"></i>
+                <h2 class="card-title">¿Necesitas muestras del producto?</h2>
                 <div style="text-align: center">
                     <p *ngIf="_request.smuestrasfisicas">Muestras Físicas: Si</p>
                     <p *ngIf="!_request.smuestrasfisicas">Muestras Físicas: No</p>
@@ -64,8 +64,8 @@
         </ion-card>
         <ion-card *ngIf="_request.pago">
             <ion-item>
-                <i item-start class="fa fa-money fa-4x" aria-hidden="true" style="color:#08ad9f"></i>
-                <h2 style="white-space: normal;color: #5e280d;text-align: center;">Forma de Pago</h2>
+                <i item-start class="fa fa-money fa-4x" aria-hidden="true" style="color:#08ad9f;"></i>
+                <h2 class="card-title">Forma de Pago</h2>
                 <div style="text-align: center">
                     <p *ngIf="_request.pago.anticipo && _request.pago.anticipo > 0">{{ _request.pago.anticipo}}% Anticipo</p>
                     <p *ngIf="_request.pago.pagoentrega && _request.pago.pagoentrega > 0">{{ _request.pago.pagoentrega}}% Contraentrega</p>
@@ -75,30 +75,30 @@
                 </div>
             </ion-item>
         </ion-card>
-        <ion-card>
-            <ion-card-header style="text-align: center; white-space: normal;color: #5e280d;">La Solicitud se evaluará bajo los criterios:</ion-card-header>
+        <ion-card class="criteria">
+            <ion-card-header class="card-title">La Solicitud se evaluará bajo los criterios:</ion-card-header>
             <ion-row>
                 <ion-col center text-center>
-                    <ion-note style="color: #08ad9f;">Variable Puntaje</ion-note>
+                    <ion-note class="title">Variable Puntaje</ion-note>
                 </ion-col>
                 <ion-col center text-center>
-                    <ion-note style="color: #08ad9f;">Porcentaje</ion-note>
+                    <ion-note class="title">Porcentaje</ion-note>
                 </ion-col>
             </ion-row>
             <div *ngIf="_request.peso">
                 <div *ngFor='let key of objectKeys(_request.peso)'>
                     <ion-row *ngIf="_request.peso[key].status && _request.peso[key].value != '0'">
                         <ion-col center text-center>
-                            <ion-note style="color: black;">{{_request.peso[key].text}}</ion-note>
+                            <ion-note class="detail">{{_request.peso[key].text}}</ion-note>
                         </ion-col>
                         <ion-col center text-center>
-                            <ion-note style="color: black">{{_request.peso[key].value}}%</ion-note>
+                            <ion-note class="detail">{{_request.peso[key].value}}%</ion-note>
                         </ion-col>
                     </ion-row>
                 </div>
             </div>
         </ion-card>
-        <button class="btn" ion-button icon-start style="width: 100%;">
+        <button class="proposal-btn" ion-button icon-start (click)="viewRequestProposals()" [disabled]="!(_request.countProffers > 0)">
             <ion-icon name="clipboard"></ion-icon>
             {{_request.countProffers}} Propuestas
         </button>

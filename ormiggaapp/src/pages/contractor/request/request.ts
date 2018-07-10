@@ -5,6 +5,7 @@ import { Subscription } from 'rxjs';
 import { AccessServiceProvider } from '../../../providers/access-service';
 import { QuotationServiceProvider } from '../../../providers/quotation-service';
 import { RequestDetailPage } from './request-detail/request-detail';
+import { ProposalPage } from './proposal/proposal';
 
 @Component({
     selector: 'page-request',
@@ -78,6 +79,14 @@ export class RequestPage {
      */
     viewRequestDetail(_pTokenRequest: string): void {
         this._navCtrl.push(RequestDetailPage, { token: _pTokenRequest });
+    }
+
+    /**
+     * Function to view request detail
+     * @param {string} _pToken 
+     */
+    viewRequestProposals(_pTokenRequest: string): void {
+        this._navCtrl.push(ProposalPage, { token: _pTokenRequest });
     }
 
     /**

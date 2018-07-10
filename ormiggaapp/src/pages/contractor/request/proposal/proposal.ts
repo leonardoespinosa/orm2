@@ -4,32 +4,29 @@ import { Network } from '@ionic-native/network';
 import { Subscription } from 'rxjs';
 import { QuotationServiceProvider } from '../../../../providers/quotation-service';
 import { AccessServiceProvider } from '../../../../providers/access-service';
-import { ProposalPage } from '../proposal/proposal';
 
 @Component({
-    selector: 'page-request-detail',
-    templateUrl: 'request-detail.html'
+    selector: 'page-proposal',
+    templateUrl: 'proposal.html'
 })
-export class RequestDetailPage implements OnInit {
+export class ProposalPage implements OnInit {
 
     private _token: string;
-    private _request: any = {};
-    private objectKeys = Object.keys;
     private disconnectSubscription: Subscription;
 
     /**
-     * RequestDetailPage Constructor
+     * ProposalPage Constructor
      * @param {NavController} navCtrl 
      * @param {NavParams} _navParams 
      * @param {AlertController} _alertCtrl 
      * @param {Platform} _platform 
      * @param {Network} _network 
-     * @param {NgZone} _ngZone
+     * @param {NgZone} _ngZone 
      * @param {LoadingController} _loadingCtrl
      * @param {AccessServiceProvider} _accessService 
      * @param {QuotationServiceProvider} _quotationService 
      */
-    constructor(public _navCtrl: NavController,
+    constructor(public navCtrl: NavController,
         public _navParams: NavParams,
         public _alertCtrl: AlertController,
         public _platform: Platform,
@@ -56,12 +53,15 @@ export class RequestDetailPage implements OnInit {
         let loading = this._loadingCtrl.create({ content: loading_msg });
         loading.present();
 
-        this._quotationService.viewRequestData(this._token).subscribe((result) => {
+        this._quotationService.viewRequestProposals(this._token).subscribe((result) => {
             this._ngZone.run(() => {
-                let _dataRSP: any = JSON.parse(atob(result.toString('utf8')));
+                console.log('testing');
+                console.log(result);
+                /*let _dataRSP: any = JSON.parse(atob(result.toString('utf8')));
                 if (_dataRSP.status === 200) {
-                    this._request = _dataRSP.data;
-                }
+                    //this._request = _dataRSP.data;
+                    console.log(_dataRSP.data);
+                }*/
                 loading.dismiss();
             });
         }, (err) => {
@@ -83,15 +83,8 @@ export class RequestDetailPage implements OnInit {
     /**
      * Function to return
      */
-    backToRequest(): void {
-        this._navCtrl.pop();
-    }
-
-    /**
-     * Function to view request detail
-     */
-    viewRequestProposals(): void {
-        this._navCtrl.push(ProposalPage, { token: this._token });
+    backToRequestDetail(): void {
+        this.navCtrl.pop();
     }
 
     /** 
