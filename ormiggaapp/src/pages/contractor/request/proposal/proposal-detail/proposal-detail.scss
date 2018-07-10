@@ -1,0 +1,40 @@
+page-proposal-detail {
+    .toolbar-title-md {
+        color: white !important;
+    }
+
+    .bar-button-default-md, .bar-button-clear-md-default, .bar-button-md-default {
+        color: white !important;
+        background-color: transparent;
+    }
+
+    .bar-button-default-ios, .bar-button-default.bar-button-ios-default, .bar-button-clear-ios-default {
+        color: white !important;
+        background-color: transparent;
+    }
+
+    .toolbar-title-ios {
+        color: white !important;
+    }
+
+    .title {
+        color: white;
+    }
+
+    .icon-color {
+        color: orange;
+    }
+
+    .description {
+        font-weight: bold;
+    }
+
+    .description-detail {
+        text-align: justify;
+    }
+
+    .items-title {
+        font-weight: bold;
+        text-align: justify;
+    }
+}

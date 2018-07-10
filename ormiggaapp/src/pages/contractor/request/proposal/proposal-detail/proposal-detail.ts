@@ -2,28 +2,27 @@ import { Component, OnInit, NgZone } from '@angular/core';
 import { NavController, NavParams, AlertController, Platform, LoadingController } from 'ionic-angular';
 import { Network } from '@ionic-native/network';
 import { Subscription } from 'rxjs';
-import { QuotationServiceProvider } from '../../../../providers/quotation-service';
-import { AccessServiceProvider } from '../../../../providers/access-service';
-import { ProposalDetailPage } from './proposal-detail/proposal-detail';
+import { QuotationServiceProvider } from '../../../../../providers/quotation-service';
+import { AccessServiceProvider } from '../../../../../providers/access-service';
 
 @Component({
-    selector: 'page-proposal',
-    templateUrl: 'proposal.html'
+    selector: 'page-proposal-detail',
+    templateUrl: 'proposal-detail.html'
 })
-export class ProposalPage implements OnInit {
+export class ProposalDetailPage implements OnInit {
 
     private _token: string;
     private disconnectSubscription: Subscription;
 
     /**
-     * ProposalPage Constructor
+     * ProposalDetailPage Constructor
      * @param {NavController} _navCtrl 
      * @param {NavParams} _navParams 
      * @param {AlertController} _alertCtrl 
      * @param {Platform} _platform 
      * @param {Network} _network 
      * @param {NgZone} _ngZone 
-     * @param {LoadingController} _loadingCtrl
+     * @param {LoadingController} _loadingCtrl 
      * @param {AccessServiceProvider} _accessService 
      * @param {QuotationServiceProvider} _quotationService 
      */
@@ -47,34 +46,6 @@ export class ProposalPage implements OnInit {
     }
 
     /**
-     * ionViewWillEnter Implementation
-     */
-    ionViewWillEnter() {
-        let loading_msg = 'Cargando...';
-        let loading = this._loadingCtrl.create({ content: loading_msg });
-        loading.present();
-
-        this._quotationService.viewRequestProposals(this._token).subscribe((result) => {
-            this._ngZone.run(() => {
-                console.log('testing');
-                console.log(result);
-                /*let _dataRSP: any = JSON.parse(atob(result.toString('utf8')));
-                if (_dataRSP.status === 200) {
-                    //this._request = _dataRSP.data;
-                    console.log(_dataRSP.data);
-                }*/
-                loading.dismiss();
-            });
-        }, (err) => {
-            loading.dismiss();
-            let title = 'Error!';
-            let subtitle = 'En este momento no es posible mostrar el detalle de la solicitud. por favor intenta de nuevo.'
-            let btn = 'Reintentar'
-            this.presentAlert(title, subtitle, btn);
-        });
-    }
-
-    /**
      * ngOnInit Implementation
      */
     ngOnInit() {
@@ -84,13 +55,8 @@ export class ProposalPage implements OnInit {
     /**
      * Function to return
      */
-    backToRequestDetail(): void {
+    backToProposal(): void {
         this._navCtrl.pop();
-    }
-
-    viewProposalDetail(): void {
-        //this._navCtrl.push(ProposalPage, { token: this._token });
-        this._navCtrl.push(ProposalDetailPage);
     }
 
     /** 
