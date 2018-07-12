@@ -4,32 +4,34 @@
     </ion-navbar>
 </ion-header>
 <ion-content padding>
-    <ion-card (click)="viewProposalDetail()">
-        <ion-item>
-            <ion-avatar item-start>
-                <img src="assets/imgs/p0.jpg">
-            </ion-avatar>
-            <h2>Proveedor Ormigga</h2>
-            <p>18 de Agosto de 2017 9:29</p>
-        </ion-item>
-        <div class="info">
-            <ion-badge>
-                5,4
-                <ion-icon name="star" class="icon-color"></ion-icon>
-            </ion-badge>
-            <ion-badge>
-                Propuesta Destacada
-                <ion-icon name="trophy"></ion-icon>
-            </ion-badge>
-        </div>
-        <ion-card-content>
-            <p class="description">Descripción:</p>
-            <p class="description-detail">descripcion descripcion descripcion descripcion descripcion descripcion descripcion descripcion</p>
-        </ion-card-content>
-        <ion-row>
-            <ion-col center text-center>
-                <ion-badge>Estado: Activa</ion-badge>
-            </ion-col>
-        </ion-row>
-    </ion-card>
+    <div *ngIf="_request.propuestas">
+        <ion-card *ngFor="let proffer of _request.propuestas" (click)="viewProposalDetail(proffer)">
+            <ion-item>
+                <ion-avatar item-start>
+                    <img src="assets/imgs/p0.jpg">
+                </ion-avatar>
+                <h2>{{proffer.name}}</h2>
+                <p>{{proffer.createdAtPropuesta | date: 'dd MMM yyyy HH:mm'}}</p>
+            </ion-item>
+            <div class="info">
+                <ion-badge *ngIf="proffer.calification">
+                    {{proffer.calification}}
+                    <ion-icon name="star" class="icon-color"></ion-icon>
+                </ion-badge>
+                <ion-badge *ngIf="proffer.featured">
+                    Propuesta Destacada
+                    <ion-icon name="trophy"></ion-icon>
+                </ion-badge>
+            </div>
+            <ion-card-content>
+                <p class="description">Descripción:</p>
+                <p class="description-detail">{{proffer.description}}</p>
+            </ion-card-content>
+            <ion-row>
+                <ion-col center text-center>
+                    <ion-badge>Estado: {{proffer.statusPropuesta}}</ion-badge>
+                </ion-col>
+            </ion-row>
+        </ion-card>
+    </div>
 </ion-content>

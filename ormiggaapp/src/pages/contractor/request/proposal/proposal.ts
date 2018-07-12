@@ -12,6 +12,7 @@ import { ProposalDetailPage } from './proposal-detail/proposal-detail';
 })
 export class ProposalPage implements OnInit {
 
+    private _request: any = {};
     private _token: string;
     private disconnectSubscription: Subscription;
 
@@ -56,19 +57,16 @@ export class ProposalPage implements OnInit {
 
         this._quotationService.viewRequestProposals(this._token).subscribe((result) => {
             this._ngZone.run(() => {
-                console.log('testing');
-                console.log(result);
-                /*let _dataRSP: any = JSON.parse(atob(result.toString('utf8')));
+                let _dataRSP: any = JSON.parse(atob(result.toString('utf8')));
                 if (_dataRSP.status === 200) {
-                    //this._request = _dataRSP.data;
-                    console.log(_dataRSP.data);
-                }*/
+                    this._request = _dataRSP;
+                }
                 loading.dismiss();
             });
         }, (err) => {
             loading.dismiss();
             let title = 'Error!';
-            let subtitle = 'En este momento no es posible mostrar el detalle de la solicitud. por favor intenta de nuevo.'
+            let subtitle = 'En este momento no es posible mostrar el detalle de la propuesta. por favor intenta de nuevo.'
             let btn = 'Reintentar'
             this.presentAlert(title, subtitle, btn);
         });
@@ -88,9 +86,12 @@ export class ProposalPage implements OnInit {
         this._navCtrl.pop();
     }
 
-    viewProposalDetail(): void {
-        //this._navCtrl.push(ProposalPage, { token: this._token });
-        this._navCtrl.push(ProposalDetailPage);
+    /**
+     * Function to view proposal detail
+     * @param {Object} _pProposal
+     */
+    viewProposalDetail(_pProposal:Object): void {
+        this._navCtrl.push(ProposalDetailPage, { proposal: _pProposal });
     }
 
     /** 

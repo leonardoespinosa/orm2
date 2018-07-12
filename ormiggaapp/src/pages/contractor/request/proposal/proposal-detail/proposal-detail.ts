@@ -11,7 +11,8 @@ import { AccessServiceProvider } from '../../../../../providers/access-service';
 })
 export class ProposalDetailPage implements OnInit {
 
-    private _token: string;
+    private _proposal: any = {};
+    private _proposalDetail: any = {};
     private disconnectSubscription: Subscription;
 
     /**
@@ -35,7 +36,7 @@ export class ProposalDetailPage implements OnInit {
         public _loadingCtrl: LoadingController,
         private _accessService: AccessServiceProvider,
         private _quotationService: QuotationServiceProvider) {
-        this._token = this._navParams.get("token");
+        this._proposal = this._navParams.get("proposal");
     }
 
     /**
@@ -43,6 +44,39 @@ export class ProposalDetailPage implements OnInit {
      */
     ionViewWillLeave() {
         this.disconnectSubscription.unsubscribe();
+    }
+
+    /**
+     * ionViewWillEnter Implementation
+     */
+    ionViewWillEnter() {
+        let loading_msg = 'Cargando...';
+        let loading = this._loadingCtrl.create({ content: loading_msg });
+        loading.present();
+
+        this._quotationService.viewRequestProposalDetail(this._proposal.tokenPropuesta).subscribe((result) => {
+            this._ngZone.run(() => {
+                try {
+                    let _dataRSP: any = JSON.parse(atob(result.toString('utf8')));
+                    if (_dataRSP.status === 200) {
+                        this._proposalDetail = _dataRSP.data;
+                    }
+                    loading.dismiss();
+                } catch (e) {
+                    loading.dismiss();
+                    let title = 'Error!';
+                    let subtitle = 'En este momento se presenta un problema al mostrar el detalle de la propuesta. por favor intenta de nuevo.'
+                    let btn = 'Aceptar'
+                    this.presentAlert(title, subtitle, btn);
+                }
+            });
+        }, (err) => {
+            loading.dismiss();
+            let title = 'Error!';
+            let subtitle = 'En este momento no es posible mostrar el detalle de la propuesta. por favor intenta de nuevo.'
+            let btn = 'Aceptar'
+            this.presentAlert(title, subtitle, btn);
+        });
     }
 
     /**

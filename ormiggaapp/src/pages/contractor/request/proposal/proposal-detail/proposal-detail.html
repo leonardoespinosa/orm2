@@ -8,73 +8,90 @@
         <ion-avatar item-start>
             <img src="assets/imgs/p0.jpg">
         </ion-avatar>
-        <h2>Proveedor Ormigga</h2>
-        <ion-badge>5,4
+        <h2>{{_proposal.name}}</h2>
+        <p *ngIf="!_proposal.miProveedor && _proposal.certified">Proveedor Certificado</p>
+        <p *ngIf="_proposal.miProveedor && _proposal.certified">Mi Proveedor Certificado</p>
+        <ion-badge *ngIf="_proposal.featured">
+            Propuesta Destacada
+            <ion-icon name="trophy"></ion-icon>
+        </ion-badge>
+        <br/>
+        <ion-badge *ngIf="_proposal.calification" class="calification-icon">
+            {{_proposal.calification}}
             <ion-icon name="star" class="icon-color"></ion-icon>
         </ion-badge>
-        <p>18 de Agosto de 2017 9:29</p>
     </ion-item>
     <br/>
-    <div>
-        <div style="display: inline-block;">
-            <ion-badge>
-                Propuesta Destacada
-                <ion-icon name="trophy"></ion-icon>
-            </ion-badge>
+    <div class="update-proposal">
+        <ion-badge *ngIf="_proposal.action == 'updatePropuesta'" class="badge">
+            Propuesta Actualizada
+        </ion-badge>
+        <p *ngIf="_proposal.action != 'updatePropuesta'" class="date">Recibida: {{_proposal.createdAtPropuesta | date: 'dd MMM yyyy HH:mm'}}</p>
+        <p *ngIf="_proposal.action == 'updatePropuesta'" class="date">Actualizada: {{_proposal.dateUpdate | date: 'dd MMM yyyy HH:mm'}}</p>
+    </div>
+    <div class="price">
+        <div *ngIf="_proposal.maxDesc && _proposal.maxDesc > 0" class="desc">
+            <span class="max-desc">¡HOY! -{{_proposal.maxDesc}}%</span>
+            <img src="assets/imgs/descuento_rojo.png" class="img-desc">
         </div>
-        <div style="display: inline-block;text-align: right;width: 45%;">
-            <p style="font-weight: bold;font-size:large;margin: 0;">$ 500.000</p>
+        <div class="min-value">
+            <p class="price">$ {{_proposal.minValue}}</p>
+        </div>
+        <div class="value-without-discount" *ngIf="_proposal.minValueSinDescuento && _proposal.minValue != _proposal.minValueSinDescuento">
+            <p class="price">$ {{_proposal.minValueSinDescuento}}</p>
         </div>
     </div>
     <div>
         <p class="description">Descripción:</p>
-        <p class="description-detail">descripcion descripcion descripcion descripcion descripcion descripcion descripcion descripcion</p>
+        <p class="description-detail">{{_proposal.description}}</p>
     </div>
     <div>
         <p class="items-title">Detalle de items por cantidad (en la contratación puedes seleccionar los items que quieras contratar)</p>
     </div>
     <ion-list>
-        <ion-item>
-            <h2>Pagina web</h2>
-            <p>Cant: 12</p>
-            <p>Vr Unit: $ 1.000.000</p>
-            <p>Descuento: 0 %</p>
-            <h3>Vr Total: $12.000.000</h3>
-        </ion-item>
-        <ion-item>
-            <h2>Diseño web</h2>
-            <p>Cant: 12</p>
-            <p>Vr Unit: $ 900.000</p>
-            <p>Descuento: 0 %</p>
-            <h3>Vr Total: $10.800.000</h3>
+        <ion-item *ngFor="let item of _proposal.dataItems">
+            <h2>{{item.description}}</h2>
+            <p>Cant: {{item.quantity}}</p>
+            <p>Vr Unit: $ {{item.valUnit}}</p>
+            <p *ngIf="item.valDesc">Descuento: {{item.valDesc}}%</p>
+            <p *ngIf="!item.valDesc">Descuento: 0%</p>
+            <h3>Vr Total: $ {{item.valTotal}}</h3>
         </ion-item>
     </ion-list>
     <div>
         <p class="description">Tiempo máximo días calendario de Entrega</p>
-        <p class="description-detail">5 día(s)</p>
+        <p class="description-detail">{{_proposalDetail.timeDesarrolloProv}} día(s)</p>
     </div>
     <div>
         <p class="description">¿Hasta qué fecha tiene validez esta propuesta?</p>
-        <p class="description-detail">4 de May. de 2018</p>
+        <p class="description-detail">{{_proposalDetail.dateValidProffer | date: 'dd MMM yyyy'}}</p>
     </div>
     <div>
         <p class="description">Envío de muestras del producto / material</p>
-        <p class="description-detail">Muestras Físicas: Si</p>
-        <p class="description-detail">Muestras Digitales: No</p>
+        <p *ngIf="_proposalDetail.smuestrasfisicas" class="description-detail">Muestras Físicas: Si</p>
+        <p *ngIf="!_proposalDetail.smuestrasfisicas" class="description-detail">Muestras Físicas: No</p>
+        <p *ngIf="_proposalDetail.smuestrasdigitales" class="description-detail">Muestras Digitales: Si</p>
+        <p *ngIf="!_proposalDetail.smuestrasdigitales" class="description-detail">Muestras Digitales: No</p>
     </div>
     <div>
         <p class="description">Tipo de contrato que se generara</p>
-        <p class="description-detail">Solo Bien(es)</p>
+        <p class="description-detail">{{_proposalDetail.typeContrato}}</p>
     </div>
-    <div>
+    <div *ngIf="_proposalDetail.pagoProv">
         <p class="description">Forma de Pago</p>
-        <p class="description-detail">20% Anticipo - 80% Contraentrega </p>
+        <div>
+            <p *ngIf="_proposalDetail.pagoProv.anticipo && _proposalDetail.pagoProv.anticipo > 0">{{ _proposalDetail.pagoProv.anticipo}}% Anticipo</p>
+            <p *ngIf="_proposalDetail.pagoProv.pagoentrega && _proposalDetail.pagoProv.pagoentrega > 0">{{ _proposalDetail.pagoProv.pagoentrega}}% Contraentrega</p>
+            <p *ngIf="_proposalDetail.pagoProv['En 30 días'] && _proposalDetail.pagoProv['En 30 días'] > 0">{{ _proposalDetail.pagoProv["En 30 días"]}}% a 30 días</p>
+            <p *ngIf="_proposalDetail.pagoProv['En 60 días'] && _proposalDetail.pagoProv['En 60 días'] > 0">{{ _proposalDetail.pagoProv["En 60 días"]}}% a 60 días</p>
+            <p *ngIf="_proposalDetail.pagoProv['En 90 días'] && _proposalDetail.pagoProv['En 90 días'] > 0">{{ _proposalDetail.pagoProv["En 90 días"]}}% a 90 días</p>
+        </div>
     </div>
-    <ion-badge>Estado: Activa</ion-badge>
+    <ion-badge>Estado: {{_proposal.statusPropuesta}}</ion-badge>
     <br/>
     <br/>
-    <button ion-button icon-start style="width: 100%;">
+    <!--button ion-button icon-start style="width: 100%;">
         <ion-icon name="thumbs-up"></ion-icon>
         IR A CONTRATAR
-    </button>
+    </button-->
 </ion-content>
